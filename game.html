@@ -6,838 +6,478 @@
     <title>Token Fortune</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
-        
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;700;900&display=swap');
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        :root {
-            --bg: #030712;
-            --card: rgba(255,255,255,0.03);
-            --border: rgba(255,255,255,0.06);
-            --accent: #8b5cf6;
-            --accent2: #a78bfa;
-            --gold: #fbbf24;
-            --pink: #ec4899;
-            --cyan: #06b6d4;
-            --green: #10b981;
-            --red: #ef4444;
-        }
-
         body {
-            background: var(--bg);
-            color: white;
+            background: #050510;
+            color: #fff;
             font-family: 'Inter', -apple-system, sans-serif;
             min-height: 100vh;
-            overflow-x: hidden;
             user-select: none;
             -webkit-user-select: none;
             -webkit-tap-highlight-color: transparent;
-            cursor: none;
-        }
-
-        /* КАСТОМНЫЙ КУРСОР */
-        .cursor {
-            width: 30px;
-            height: 30px;
-            border: 2px solid var(--accent2);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            transition: transform 0.15s, border-color 0.3s;
-            mix-blend-mode: difference;
-            transform: translate(-50%, -50%);
-        }
-
-        .cursor-dot {
-            width: 6px;
-            height: 6px;
-            background: var(--accent2);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 0 15px var(--accent2);
-        }
-
-        .cursor.clicking { transform: translate(-50%, -50%) scale(0.5); }
-        .cursor.hovering { transform: translate(-50%, -50%) scale(1.8); border-color: var(--pink); }
-
-        /* ЗВЁЗДНОЕ НЕБО С ДВИЖЕНИЕМ */
-        .galaxy {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .star-layer {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            animation: rotateGalaxy var(--speed) linear infinite;
-        }
-
-        @keyframes rotateGalaxy {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .star-dot {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-            animation: glowPulse var(--glow-speed) ease-in-out infinite;
-        }
-
-        @keyframes glowPulse {
-            0%, 100% { box-shadow: 0 0 2px rgba(255,255,255,0.3); }
-            50% { box-shadow: 0 0 8px rgba(168,127,250,0.8), 0 0 20px rgba(168,127,250,0.4); }
-        }
-
-        /* НЕБУЛА НА ФОНЕ */
-        .nebula {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.15;
-            pointer-events: none;
-            z-index: 0;
-            animation: nebulaMove 20s ease-in-out infinite;
-        }
-
-        .nebula-1 {
-            width: 400px; height: 400px;
-            background: radial-gradient(circle, var(--accent), transparent);
-            top: -10%; left: -10%;
-        }
-
-        .nebula-2 {
-            width: 350px; height: 350px;
-            background: radial-gradient(circle, var(--pink), transparent);
-            bottom: -10%; right: -10%;
-            animation-delay: -10s;
-        }
-
-        .nebula-3 {
-            width: 300px; height: 300px;
-            background: radial-gradient(circle, var(--cyan), transparent);
-            top: 50%; left: 50%;
-            animation-delay: -5s;
-        }
-
-        @keyframes nebulaMove {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            25% { transform: translate(50px, -30px) scale(1.2); }
-            50% { transform: translate(-30px, 50px) scale(0.9); }
-            75% { transform: translate(-50px, -20px) scale(1.1); }
+            background-image: 
+                radial-gradient(ellipse at 30% 20%, rgba(120,80,255,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 80%, rgba(255,60,120,0.06) 0%, transparent 60%),
+                radial-gradient(ellipse at 50% 50%, rgba(100,200,255,0.04) 0%, transparent 60%);
         }
 
         .container {
-            position: relative;
-            z-index: 1;
-            width: 92%;
-            max-width: 420px;
+            width: 90%;
+            max-width: 400px;
             margin: 0 auto;
-            padding: 20px 0 100px;
+            padding: 40px 0 90px;
         }
 
-        /* ШАПКА */
+        /* ===== ШАПКА ===== */
         .header {
             text-align: center;
-            margin-bottom: 35px;
-            animation: headerEntrance 1s cubic-bezier(0.16, 1, 0.3, 1);
+            margin-bottom: 40px;
         }
 
-        @keyframes headerEntrance {
-            from { opacity: 0; transform: translateY(-40px); filter: blur(10px); }
-            to { opacity: 1; transform: translateY(0); filter: blur(0); }
-        }
-
-        .logo-container {
+        .logo {
             position: relative;
             display: inline-block;
-            margin-bottom: 10px;
+            margin-bottom: 16px;
         }
 
-        .logo-icon {
-            font-size: 80px;
+        .logo-emoji {
+            font-size: 70px;
             display: block;
-            animation: logoFloat 3s ease-in-out infinite, logoGlow 2s ease-in-out infinite;
-            filter: drop-shadow(0 0 30px rgba(139,92,246,0.6));
-            position: relative;
-            z-index: 2;
+            animation: floatCube 3s ease-in-out infinite;
+            filter: drop-shadow(0 20px 40px rgba(120,80,255,0.4));
         }
 
-        @keyframes logoFloat {
-            0%, 100% { transform: translateY(0) rotateY(0deg); }
-            25% { transform: translateY(-12px) rotateY(8deg); }
-            50% { transform: translateY(-5px) rotateY(0deg); }
-            75% { transform: translateY(-15px) rotateY(-8deg); }
+        @keyframes floatCube {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
         }
 
-        @keyframes logoGlow {
-            0%, 100% { filter: drop-shadow(0 0 30px rgba(139,92,246,0.6)); }
-            50% { filter: drop-shadow(0 0 60px rgba(236,72,153,0.8)); }
-        }
-
-        .logo-rings {
+        .logo-glow {
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 100px;
-            height: 100px;
-            border: 2px solid rgba(139,92,246,0.3);
+            width: 80px; height: 80px;
+            background: rgba(120,80,255,0.15);
             border-radius: 50%;
-            animation: ringPulse 2s ease-in-out infinite;
-            z-index: 1;
+            filter: blur(25px);
+            animation: glowPulse 2s ease-in-out infinite;
         }
 
-        .logo-rings:nth-child(2) {
-            animation-delay: -0.7s;
-            border-color: rgba(236,72,153,0.3);
-        }
-
-        .logo-rings:nth-child(3) {
-            animation-delay: -1.4s;
-            border-color: rgba(6,182,212,0.3);
-        }
-
-        @keyframes ringPulse {
+        @keyframes glowPulse {
             0%, 100% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.5; }
-            50% { transform: translate(-50%, -50%) scale(1.3); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scale(1.4); opacity: 1; }
         }
 
-        .logo-text {
-            font-size: 38px;
+        .title {
+            font-size: 36px;
             font-weight: 900;
-            background: linear-gradient(135deg, var(--accent2), var(--pink), var(--gold), var(--cyan));
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #a78bfa, #f472b6);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            letter-spacing: 4px;
-            animation: textShimmer 4s ease-in-out infinite;
-            background-size: 300% 300%;
         }
 
-        @keyframes textShimmer {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        .status-row {
-            display: flex;
-            justify-content: center;
+        .online-badge {
+            display: inline-flex;
             align-items: center;
-            gap: 10px;
-            margin-top: 12px;
+            gap: 8px;
+            margin-top: 10px;
+            background: rgba(255,255,255,0.04);
+            padding: 8px 18px;
+            border-radius: 30px;
             font-size: 13px;
             font-weight: 600;
-        }
-
-        .status-indicator {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(255,255,255,0.05);
-            padding: 6px 14px;
-            border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.06);
+            letter-spacing: 1px;
         }
 
         .live-dot {
             width: 8px; height: 8px;
-            background: var(--green);
+            background: #22c55e;
             border-radius: 50%;
             animation: livePulse 1.5s ease-in-out infinite;
-            box-shadow: 0 0 10px var(--green);
+            box-shadow: 0 0 12px #22c55e;
         }
 
         @keyframes livePulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(1.8); }
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
         }
 
-        /* СЕТКА КНОПОК */
-        .game-grid {
+        /* ===== СЕТКА ===== */
+        .grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 14px;
+            gap: 12px;
         }
 
-        .game-btn {
-            background: var(--card);
-            backdrop-filter: blur(30px);
-            border: 1px solid var(--border);
-            border-radius: 28px;
-            padding: 30px 14px;
+        .card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 24px;
+            padding: 28px 14px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
-            animation: cardEntrance 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
         }
 
-        .game-btn:nth-child(1) { animation-delay: 0.1s; }
-        .game-btn:nth-child(2) { animation-delay: 0.2s; }
-        .game-btn:nth-child(3) { animation-delay: 0.3s; }
-        .game-btn:nth-child(4) { animation-delay: 0.4s; }
-        .game-btn:nth-child(5) { animation-delay: 0.5s; }
-        .game-btn:nth-child(6) { animation-delay: 0.6s; }
-
-        @keyframes cardEntrance {
-            from { opacity: 0; transform: translateY(30px) scale(0.8) rotateY(20deg); }
-            to { opacity: 1; transform: translateY(0) scale(1) rotateY(0deg); }
+        .card:active {
+            transform: scale(0.92);
+            background: rgba(120,80,255,0.1);
+            border-color: rgba(120,80,255,0.4);
+            box-shadow: 0 0 40px rgba(120,80,255,0.2);
         }
 
-        .game-btn::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(600px circle at var(--x, 50%) var(--y, 50%), 
-                        rgba(139,92,246,0.3) 0%, transparent 50%);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .game-btn:hover::before { opacity: 1; }
-
-        .game-btn::after {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
-            transition: left 0.5s;
-        }
-
-        .game-btn:active::after { left: 100%; }
-
-        .game-btn:active {
-            transform: scale(0.9);
-            border-color: var(--accent2);
-            box-shadow: 0 0 40px rgba(139,92,246,0.4), inset 0 0 30px rgba(139,92,246,0.1);
-        }
-
-        .game-btn .btn-icon {
-            font-size: 52px;
+        .card .icon {
+            font-size: 46px;
             display: block;
-            margin-bottom: 12px;
-            position: relative;
-            z-index: 1;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            margin-bottom: 10px;
+            transition: transform 0.3s;
         }
 
-        .game-btn:active .btn-icon {
-            transform: scale(1.3) rotate(15deg);
-            animation: iconBounce 0.5s ease-out;
+        .card:active .icon {
+            transform: scale(1.2);
         }
 
-        @keyframes iconBounce {
-            0% { transform: scale(1); }
-            30% { transform: scale(1.4) rotate(-10deg); }
-            60% { transform: scale(0.9) rotate(5deg); }
-            100% { transform: scale(1) rotate(0deg); }
+        .card .label {
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
         }
 
-        .game-btn .btn-title {
-            font-size: 18px;
-            font-weight: 800;
-            letter-spacing: 2px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .badge-live {
+        .card .tag {
             position: absolute;
-            top: 12px;
-            right: 12px;
-            background: var(--pink);
-            color: white;
-            font-size: 10px;
+            top: 10px;
+            right: 10px;
+            font-size: 9px;
             font-weight: 800;
             padding: 5px 10px;
-            border-radius: 20px;
-            z-index: 2;
-            animation: badgeShake 3s ease-in-out infinite;
+            border-radius: 15px;
+            letter-spacing: 1px;
         }
 
-        .badge-hot {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            background: var(--red);
-            color: white;
-            font-size: 10px;
-            font-weight: 800;
-            padding: 5px 10px;
-            border-radius: 20px;
-            z-index: 2;
-            animation: badgeGlow 1s ease-in-out infinite;
+        .tag-hot {
+            background: #ef4444;
+            animation: tagGlow 1s ease-in-out infinite;
         }
 
-        @keyframes badgeShake {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(-5deg); }
-            75% { transform: rotate(5deg); }
+        .tag-live {
+            background: #ec4899;
+            animation: tagGlow 1.5s ease-in-out infinite;
         }
 
-        @keyframes badgeGlow {
-            0%, 100% { box-shadow: 0 0 10px var(--red); }
-            50% { box-shadow: 0 0 25px var(--red), 0 0 40px rgba(239,68,68,0.5); }
+        @keyframes tagGlow {
+            0%, 100% { box-shadow: 0 0 8px currentColor; }
+            50% { box-shadow: 0 0 20px currentColor, 0 0 35px currentColor; }
         }
 
-        /* МОДАЛКА */
-        .modal-overlay {
+        /* ===== МОДАЛКА ===== */
+        .modal {
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.95);
-            backdrop-filter: blur(30px);
+            inset: 0;
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(25px);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 100;
-            visibility: hidden;
             opacity: 0;
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            visibility: hidden;
+            transition: all 0.35s ease;
         }
 
-        .modal-overlay.show {
-            visibility: visible;
+        .modal.open {
             opacity: 1;
+            visibility: visible;
         }
 
-        .modal-dialog {
-            background: linear-gradient(160deg, #0f0720, #1a0a2e, #0d0520);
-            border: 1px solid rgba(139,92,246,0.3);
-            border-radius: 36px;
-            padding: 35px 28px;
+        .modal-box {
+            background: #0c0c1d;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 32px;
+            padding: 30px 24px;
             width: 88%;
-            max-width: 370px;
+            max-width: 350px;
             text-align: center;
-            transform: scale(0.7) translateY(60px) rotateX(20deg);
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 40px 80px rgba(0,0,0,0.8), 0 0 100px rgba(139,92,246,0.2),
-                        inset 0 1px 0 rgba(255,255,255,0.05);
-            position: relative;
+            transform: scale(0.85) translateY(30px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .modal-overlay.show .modal-dialog {
-            transform: scale(1) translateY(0) rotateX(0deg);
-        }
-
-        .modal-glow {
-            position: absolute;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: radial-gradient(circle at center, rgba(139,92,246,0.1), transparent 60%);
-            pointer-events: none;
+        .modal.open .modal-box {
+            transform: scale(1) translateY(0);
         }
 
         .modal-title {
-            font-size: 26px;
+            font-size: 24px;
             font-weight: 900;
-            margin-bottom: 25px;
-            background: linear-gradient(135deg, var(--accent2), var(--pink));
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #a78bfa, #f472b6);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            position: relative;
-            z-index: 1;
         }
 
-        .dice-stage {
-            position: relative;
-            z-index: 1;
-            margin: 20px 0;
+        .dice-big {
+            font-size: 90px;
+            margin: 15px 0;
+            display: block;
+            filter: drop-shadow(0 15px 30px rgba(120,80,255,0.4));
+            transition: transform 0.1s;
         }
 
-        .dice-3d {
-            font-size: 100px;
-            display: inline-block;
-            animation: diceFloat 2s ease-in-out infinite;
-            filter: drop-shadow(0 20px 30px rgba(139,92,246,0.5));
+        .dice-big.shaking {
+            animation: shake 0.6s ease-out;
         }
 
-        @keyframes diceFloat {
-            0%, 100% { transform: translateY(0) rotateY(0deg); }
-            50% { transform: translateY(-15px) rotateY(15deg); }
-        }
-
-        .dice-3d.rolling-fast {
-            animation: diceRollFast 0.8s ease-out;
-        }
-
-        @keyframes diceRollFast {
-            0% { transform: rotate(0deg) scale(0); }
-            30% { transform: rotate(200deg) scale(1.4); }
-            60% { transform: rotate(400deg) scale(0.9); }
+        @keyframes shake {
+            0% { transform: rotate(0deg) scale(0.3); }
+            25% { transform: rotate(90deg) scale(1.2); }
+            50% { transform: rotate(270deg) scale(0.9); }
+            75% { transform: rotate(450deg) scale(1.1); }
             100% { transform: rotate(720deg) scale(1); }
         }
 
-        .bet-label {
-            font-size: 13px;
-            opacity: 0.6;
-            letter-spacing: 2px;
-            margin-bottom: 5px;
-        }
-
-        .bet-value {
-            font-size: 28px;
-            font-weight: 900;
-            background: linear-gradient(135deg, var(--gold), #fde047);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 30px rgba(251,191,36,0.3);
-        }
-
-        .num-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin: 25px 0;
-            position: relative;
-            z-index: 1;
-        }
-
-        .num-btn {
-            background: rgba(255,255,255,0.04);
-            border: 2px solid rgba(255,255,255,0.08);
-            color: white;
-            padding: 18px;
-            border-radius: 18px;
+        .bet-display {
             font-size: 26px;
             font-weight: 900;
+            color: #fbbf24;
+            margin: 8px 0;
+        }
+
+        .num-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .num {
+            background: rgba(255,255,255,0.04);
+            border: 2px solid rgba(255,255,255,0.08);
+            color: #fff;
+            padding: 16px;
+            border-radius: 16px;
+            font-size: 24px;
+            font-weight: 900;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative;
-            overflow: hidden;
+            transition: all 0.25s;
         }
 
-        .num-btn:hover {
-            border-color: var(--accent2);
-            background: rgba(139,92,246,0.2);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(139,92,246,0.3);
+        .num:active {
+            background: #7c3aed;
+            border-color: #a78bfa;
+            transform: scale(0.85);
+            box-shadow: 0 0 35px rgba(124,58,237,0.7);
         }
 
-        .num-btn:active {
-            transform: scale(0.8);
-            background: var(--accent);
-            border-color: var(--accent2);
-            box-shadow: 0 0 50px rgba(139,92,246,0.7), 0 0 80px rgba(236,72,153,0.3);
-            transition: all 0.1s;
-        }
-
-        .num-btn .num-ripple {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.4);
-            transform: scale(0);
-            animation: numRipple 0.6s ease-out;
-        }
-
-        @keyframes numRipple {
-            to { transform: scale(3); opacity: 0; }
-        }
-
-        .btn-gradient {
-            background: linear-gradient(135deg, var(--accent), var(--pink));
-            border: none;
-            color: white;
-            padding: 17px;
-            border-radius: 18px;
-            font-size: 17px;
-            font-weight: 800;
-            cursor: pointer;
+        .btn {
             width: 100%;
-            margin-top: 14px;
-            letter-spacing: 2px;
+            padding: 16px;
+            border: none;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            letter-spacing: 1.5px;
             transition: all 0.3s;
-            box-shadow: 0 15px 40px rgba(139,92,246,0.4);
-            position: relative;
-            z-index: 1;
-            overflow: hidden;
+            margin-top: 10px;
         }
 
-        .btn-gradient::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.6s;
+        .btn-primary {
+            background: linear-gradient(135deg, #7c3aed, #ec4899);
+            color: #fff;
+            box-shadow: 0 10px 30px rgba(124,58,237,0.3);
         }
 
-        .btn-gradient:hover::before { left: 100%; }
-
-        .btn-gradient:active {
+        .btn-primary:active {
             transform: scale(0.94);
-            box-shadow: 0 5px 20px rgba(139,92,246,0.6);
+            box-shadow: 0 5px 20px rgba(236,72,153,0.5);
         }
 
         .btn-ghost {
             background: rgba(255,255,255,0.06);
-            margin-top: 8px;
-            box-shadow: none;
+            color: #fff;
             border: 1px solid rgba(255,255,255,0.1);
         }
 
-        /* ПОЛЗУНОК */
-        .slider-wrapper { position: relative; z-index: 1; margin: 15px 0; }
-
+        /* ===== ПОЛЗУНОК ===== */
         input[type=range] {
             -webkit-appearance: none;
             width: 100%;
-            height: 8px;
-            border-radius: 4px;
-            background: linear-gradient(90deg, var(--accent), var(--pink));
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255,255,255,0.1);
             outline: none;
+            margin: 12px 0;
         }
 
         input[type=range]::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 32px; height: 32px;
+            width: 28px; height: 28px;
             border-radius: 50%;
-            background: white;
+            background: #fff;
             cursor: pointer;
-            border: 3px solid var(--accent);
-            box-shadow: 0 0 25px rgba(139,92,246,0.7);
-            transition: all 0.2s;
+            border: 3px solid #7c3aed;
+            box-shadow: 0 0 20px rgba(124,58,237,0.6);
         }
 
-        input[type=range]::-webkit-slider-thumb:active {
-            transform: scale(1.3);
-            box-shadow: 0 0 40px rgba(236,72,153,0.9);
-        }
-
-        /* ТОСТ */
-        .toast-container {
+        /* ===== ТОСТ ===== */
+        .toast {
             position: fixed;
             top: 20px;
             left: 50%;
-            transform: translateX(-50%);
-            z-index: 300;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .toast {
-            background: rgba(15,7,32,0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(139,92,246,0.3);
-            color: white;
-            padding: 14px 24px;
-            border-radius: 50px;
+            transform: translateX(-50%) translateY(-120px);
+            background: #0c0c1d;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 30px;
             font-weight: 700;
-            font-size: 14px;
-            white-space: nowrap;
-            animation: toastIn 0.5s cubic-bezier(0.16, 1, 0.3, 1), toastOut 0.5s 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            box-shadow: 0 10px 30px rgba(139,92,246,0.3);
+            font-size: 13px;
+            z-index: 300;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            letter-spacing: 1px;
         }
 
-        @keyframes toastIn {
-            from { transform: translateY(-30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        .toast.visible {
+            transform: translateX(-50%) translateY(0);
         }
 
-        @keyframes toastOut {
-            from { transform: translateY(0); opacity: 1; }
-            to { transform: translateY(-30px); opacity: 0; }
-        }
-
-        /* КОНФЕТТИ 2.0 */
-        .confetti-piece {
+        /* ===== КОНФЕТТИ ===== */
+        .conf {
             position: fixed;
-            pointer-events: none;
             z-index: 250;
-            animation: confettiExplosion var(--dur) cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            pointer-events: none;
+            animation: confFall var(--t) ease-out forwards;
         }
 
-        @keyframes confettiExplosion {
+        @keyframes confFall {
             0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
-            100% { transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(0); opacity: 0; }
+            100% { transform: translate(var(--x), var(--y)) rotate(var(--r)) scale(0); opacity: 0; }
         }
 
-        /* ЭКРАН ПОБЕДЫ */
-        .win-overlay {
+        /* ===== НИЖНЕЕ МЕНЮ ===== */
+        .nav {
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 200;
-            pointer-events: none;
-        }
-
-        .win-text {
-            font-size: 60px;
-            font-weight: 900;
-            animation: winPop 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            pointer-events: none;
-        }
-
-        @keyframes winPop {
-            0% { transform: scale(0) rotate(-30deg); opacity: 0; }
-            40% { transform: scale(1.3) rotate(5deg); opacity: 1; }
-            100% { transform: scale(1) rotate(0deg); opacity: 0; }
-        }
-
-        /* НИЖНЕЕ МЕНЮ */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0; left: 0; right: 0;
-            background: rgba(3,7,18,0.95);
+            bottom: 0;
+            left: 0; right: 0;
+            background: rgba(5,5,16,0.95);
             backdrop-filter: blur(30px);
             display: flex;
             justify-content: space-around;
-            padding: 14px 10px 22px;
-            border-top: 1px solid rgba(139,92,246,0.1);
+            padding: 12px 8px 22px;
+            border-top: 1px solid rgba(255,255,255,0.05);
             z-index: 50;
         }
 
         .nav-item {
             text-align: center;
-            cursor: pointer;
-            opacity: 0.4;
+            opacity: 0.35;
             transition: all 0.3s;
             font-size: 10px;
             font-weight: 700;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
+            cursor: pointer;
         }
 
-        .nav-item.active { opacity: 1; color: var(--accent2); }
+        .nav-item.active { opacity: 1; color: #a78bfa; }
 
-        .nav-icon {
-            font-size: 26px;
+        .nav-item span {
+            font-size: 24px;
             display: block;
-            margin-bottom: 4px;
-            transition: transform 0.3s;
+            margin-bottom: 3px;
         }
 
-        .nav-item:active .nav-icon { transform: scale(1.4) rotate(10deg); }
-
-        /* ЧАСТИЦЫ ПРИ КЛИКЕ */
-        .click-particle {
-            position: fixed;
-            pointer-events: none;
-            z-index: 280;
-            animation: clickBurst 0.8s ease-out forwards;
-        }
-
-        @keyframes clickBurst {
-            0% { transform: translate(0, 0) scale(1); opacity: 1; }
-            100% { transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0; }
-        }
+        .nav-item:active { transform: scale(0.9); }
     </style>
 </head>
 <body>
-    <!-- Кастомный курсор -->
-    <div class="cursor" id="cursor"></div>
-    <div class="cursor-dot" id="cursorDot"></div>
 
-    <!-- Галактика -->
-    <div class="galaxy" id="galaxy"></div>
-
-    <!-- Небулы -->
-    <div class="nebula nebula-1"></div>
-    <div class="nebula nebula-2"></div>
-    <div class="nebula nebula-3"></div>
-
-    <!-- Тосты -->
-    <div class="toast-container" id="toastContainer"></div>
-
-    <!-- Визуал победы -->
-    <div class="win-overlay" id="winOverlay"></div>
+    <div class="toast" id="toast"></div>
 
     <div class="container">
         <!-- Шапка -->
         <div class="header">
-            <div class="logo-container">
-                <div class="logo-rings"></div>
-                <div class="logo-rings"></div>
-                <div class="logo-rings"></div>
-                <span class="logo-icon">🎲</span>
+            <div class="logo">
+                <div class="logo-glow"></div>
+                <span class="logo-emoji">🎲</span>
             </div>
-            <h1 class="logo-text">TOKEN FORTUNE</h1>
-            <div class="status-row">
-                <div class="status-indicator">
-                    <span class="live-dot"></span> ОНЛАЙН
-                </div>
+            <h1 class="title">TOKEN FORTUNE</h1>
+            <div class="online-badge">
+                <span class="live-dot"></span> ОНЛАЙН
             </div>
         </div>
 
-        <!-- Кнопки -->
-        <div class="game-grid">
-            <div class="game-btn" onclick="openDice()">
-                <span class="badge-hot">ГОРЯЧО</span>
-                <span class="btn-icon">🎲</span>
-                <div class="btn-title">КОСТИ</div>
+        <!-- Сетка -->
+        <div class="grid">
+            <div class="card" onclick="openDice()">
+                <span class="tag tag-hot">ГОРЯЧО</span>
+                <span class="icon">🎲</span>
+                <div class="label">КОСТИ</div>
             </div>
 
-            <div class="game-btn" onclick="sendCmd('join_contest')">
-                <span class="badge-live">LIVE</span>
-                <span class="btn-icon">🏆</span>
-                <div class="btn-title">КОНКУРС</div>
+            <div class="card" onclick="sendCmd('join_contest')">
+                <span class="tag tag-live">LIVE</span>
+                <span class="icon">🏆</span>
+                <div class="label">КОНКУРС</div>
             </div>
 
-            <div class="game-btn" onclick="sendCmd('bonus')">
-                <span class="btn-icon">🎁</span>
-                <div class="btn-title">БОНУС</div>
+            <div class="card" onclick="sendCmd('bonus')">
+                <span class="icon">🎁</span>
+                <div class="label">БОНУС</div>
             </div>
 
-            <div class="game-btn" onclick="sendCmd('stats')">
-                <span class="btn-icon">📊</span>
-                <div class="btn-title">СТАТИСТИКА</div>
+            <div class="card" onclick="sendCmd('stats')">
+                <span class="icon">📊</span>
+                <div class="label">СТАТИСТИКА</div>
             </div>
 
-            <div class="game-btn" onclick="sendCmd('achievements')">
-                <span class="btn-icon">🏅</span>
-                <div class="btn-title">ДОСТИЖЕНИЯ</div>
+            <div class="card" onclick="sendCmd('achievements')">
+                <span class="icon">🏅</span>
+                <div class="label">ДОСТИЖЕНИЯ</div>
             </div>
 
-            <div class="game-btn" onclick="sendCmd('help')">
-                <span class="btn-icon">ℹ️</span>
-                <div class="btn-title">ПОМОЩЬ</div>
+            <div class="card" onclick="sendCmd('help')">
+                <span class="icon">ℹ️</span>
+                <div class="label">ПОМОЩЬ</div>
             </div>
         </div>
     </div>
 
-    <!-- Модалка КОСТИ -->
-    <div class="modal-overlay" id="diceModal">
-        <div class="modal-dialog">
-            <div class="modal-glow"></div>
-            <h2 class="modal-title">🎲 БРОСОК КОСТЕЙ</h2>
-            <div class="dice-stage">
-                <span class="dice-3d" id="diceDisplay">🎲</span>
+    <!-- Модалка -->
+    <div class="modal" id="diceModal">
+        <div class="modal-box">
+            <h2 class="modal-title">БРОСОК КОСТЕЙ</h2>
+            <span class="dice-big" id="diceDisplay">🎲</span>
+            <p style="opacity:0.5; font-size:12px; letter-spacing:1px;">СТАВКА</p>
+            <div class="bet-display" id="betVal">100</div>
+            <input type="range" min="10" max="100000" value="100" id="betSlider"
+                   oninput="document.getElementById('betVal').textContent = Number(this.value).toLocaleString()">
+            <p style="margin-top:16px; font-weight:700; letter-spacing:1px;">ВЫБЕРИ ЧИСЛО</p>
+            <div class="num-row">
+                <button class="num" onclick="roll(1)">1</button>
+                <button class="num" onclick="roll(2)">2</button>
+                <button class="num" onclick="roll(3)">3</button>
+                <button class="num" onclick="roll(4)">4</button>
+                <button class="num" onclick="roll(5)">5</button>
+                <button class="num" onclick="roll(6)">6</button>
             </div>
-            <div class="bet-label">СТАВКА</div>
-            <div class="bet-value" id="betVal">100</div>
-            <div class="slider-wrapper">
-                <input type="range" min="10" max="100000" value="100" id="betSlider"
-                       oninput="updateBet(this.value)">
-            </div>
-            <p style="margin-top: 18px; font-weight: 700; letter-spacing: 1px;">ВЫБЕРИ ЧИСЛО</p>
-            <div class="num-grid">
-                <button class="num-btn" onclick="rollDice(1)">1</button>
-                <button class="num-btn" onclick="rollDice(2)">2</button>
-                <button class="num-btn" onclick="rollDice(3)">3</button>
-                <button class="num-btn" onclick="rollDice(4)">4</button>
-                <button class="num-btn" onclick="rollDice(5)">5</button>
-                <button class="num-btn" onclick="rollDice(6)">6</button>
-            </div>
-            <button class="btn-gradient btn-ghost" onclick="closeDice()">ЗАКРЫТЬ</button>
+            <button class="btn btn-ghost" onclick="closeDice()">ЗАКРЫТЬ</button>
         </div>
     </div>
 
-    <!-- Нижнее меню -->
-    <div class="bottom-nav">
-        <div class="nav-item active"><span class="nav-icon">🏠</span>ГЛАВНАЯ</div>
-        <div class="nav-item"><span class="nav-icon">🏆</span>РЕЙТИНГ</div>
-        <div class="nav-item"><span class="nav-icon">👤</span>ПРОФИЛЬ</div>
-        <div class="nav-item"><span class="nav-icon">⚙️</span>ЕЩЁ</div>
+    <!-- Меню -->
+    <div class="nav">
+        <div class="nav-item active"><span>🏠</span>ГЛАВНАЯ</div>
+        <div class="nav-item"><span>🏆</span>РЕЙТИНГ</div>
+        <div class="nav-item"><span>👤</span>ПРОФИЛЬ</div>
+        <div class="nav-item"><span>⚙️</span>ЕЩЁ</div>
     </div>
 
     <script>
@@ -845,199 +485,89 @@
         tg.expand();
         tg.ready();
 
-        // ===== КАСТОМНЫЙ КУРСОР =====
-        const cursor = document.getElementById('cursor');
-        const cursorDot = document.getElementById('cursorDot');
-        
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-            cursorDot.style.left = e.clientX + 'px';
-            cursorDot.style.top = e.clientY + 'px';
-        });
-
-        document.addEventListener('mousedown', () => cursor.classList.add('clicking'));
-        document.addEventListener('mouseup', () => cursor.classList.remove('clicking'));
-
-        document.querySelectorAll('.game-btn, .num-btn, .btn-gradient, .nav-item').forEach(el => {
-            el.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
-            el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
-        });
-
-        // ===== ГАЛАКТИКА =====
-        function createGalaxy() {
-            const galaxy = document.getElementById('galaxy');
-            for (let layer = 0; layer < 3; layer++) {
-                const layerDiv = document.createElement('div');
-                layerDiv.className = 'star-layer';
-                layerDiv.style.setProperty('--speed', (30 + layer * 15) + 's');
-                
-                for (let i = 0; i < 50; i++) {
-                    const star = document.createElement('div');
-                    star.className = 'star-dot';
-                    const angle = (i / 50) * Math.PI * 2;
-                    const radius = 30 + Math.random() * 40;
-                    star.style.left = (50 + Math.cos(angle) * radius) + '%';
-                    star.style.top = (50 + Math.sin(angle) * radius) + '%';
-                    star.style.width = star.style.height = (Math.random() * 3 + 1) + 'px';
-                    star.style.setProperty('--glow-speed', (2 + Math.random() * 3) + 's');
-                    layerDiv.appendChild(star);
-                }
-                galaxy.appendChild(layerDiv);
-            }
-        }
-        createGalaxy();
-
-        // ===== ТОСТ =====
-        function showToast(text) {
-            const container = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            toast.textContent = text;
-            container.appendChild(toast);
-            setTimeout(() => toast.remove(), 2000);
+        // Тосты
+        function toast(text) {
+            const t = document.getElementById('toast');
+            t.textContent = text;
+            t.classList.add('visible');
+            clearTimeout(t._timeout);
+            t._timeout = setTimeout(() => t.classList.remove('visible'), 1800);
         }
 
-        // ===== КОНФЕТТИ 2.0 =====
-        function megaConfetti(count = 60) {
-            const emojis = ['✨', '💎', '🪙', '⭐', '🌟', '💰', '🎉', '🔥', '💫', '🎯', '💜', '🪄'];
-            
+        // Конфетти
+        function confetti(count = 45) {
+            const e = ['✨','💎','🪙','⭐','💰','🎉','💜'];
             for (let i = 0; i < count; i++) {
                 setTimeout(() => {
-                    const el = document.createElement('div');
-                    el.className = 'confetti-piece';
-                    el.style.left = '50%';
-                    el.style.top = '50%';
-                    el.style.fontSize = (Math.random() * 24 + 12) + 'px';
-                    el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-                    el.style.setProperty('--tx', (Math.random() * 400 - 200) + 'px');
-                    el.style.setProperty('--ty', (Math.random() * -400 - 100) + 'px');
-                    el.style.setProperty('--rot', (Math.random() * 720 - 360) + 'deg');
-                    el.style.setProperty('--dur', (Math.random() * 1.5 + 1) + 's');
-                    document.body.appendChild(el);
-                    setTimeout(() => el.remove(), 2500);
-                }, i * 15);
+                    const c = document.createElement('div');
+                    c.className = 'conf';
+                    c.style.left = '50%';
+                    c.style.top = '45%';
+                    c.textContent = e[Math.floor(Math.random() * e.length)];
+                    c.style.fontSize = (Math.random() * 22 + 10) + 'px';
+                    c.style.setProperty('--x', (Math.random() * 350 - 175) + 'px');
+                    c.style.setProperty('--y', (Math.random() * -350 - 80) + 'px');
+                    c.style.setProperty('--r', (Math.random() * 600 - 300) + 'deg');
+                    c.style.setProperty('--t', (Math.random() * 1.4 + 0.8) + 's');
+                    document.body.appendChild(c);
+                    setTimeout(() => c.remove(), 2200);
+                }, i * 18);
             }
         }
 
-        // ===== ЧАСТИЦЫ ПРИ КЛИКЕ =====
-        function clickBurst(x, y) {
-            for (let i = 0; i < 12; i++) {
-                const p = document.createElement('div');
-                p.className = 'click-particle';
-                p.style.left = x + 'px';
-                p.style.top = y + 'px';
-                p.style.width = p.style.height = (Math.random() * 8 + 4) + 'px';
-                p.style.background = ['#8b5cf6', '#ec4899', '#fbbf24', '#06b6d4'][Math.floor(Math.random()*4)];
-                p.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
-                p.style.setProperty('--dx', (Math.random() * 60 - 30) + 'px');
-                p.style.setProperty('--dy', (Math.random() * 60 - 30) + 'px');
-                document.body.appendChild(p);
-                setTimeout(() => p.remove(), 800);
-            }
-        }
-
-        document.addEventListener('click', (e) => {
-            clickBurst(e.clientX, e.clientY);
-        });
-
-        // ===== ОТПРАВКА КОМАНД =====
+        // Отправка команд
         function sendCmd(cmd) {
             tg.sendData(JSON.stringify({ command: cmd }));
             tg.HapticFeedback.impactOccurred('heavy');
-            showToast('✅ ВЫПОЛНЕНО');
+            toast('✅ ГОТОВО');
         }
 
-        // ===== КОСТИ =====
+        // Кости
         function openDice() {
-            document.getElementById('diceModal').classList.add('show');
+            document.getElementById('diceModal').classList.add('open');
             document.getElementById('diceDisplay').textContent = '🎲';
-            document.getElementById('diceDisplay').classList.remove('rolling-fast');
+            document.getElementById('diceDisplay').classList.remove('shaking');
             tg.HapticFeedback.impactOccurred('light');
         }
 
         function closeDice() {
-            document.getElementById('diceModal').classList.remove('show');
+            document.getElementById('diceModal').classList.remove('open');
         }
 
-        function updateBet(val) {
-            document.getElementById('betVal').textContent = Number(val).toLocaleString();
-        }
-
-        function rollDice(number) {
+        function roll(num) {
             const bet = document.getElementById('betSlider').value;
-            const display = document.getElementById('diceDisplay');
-            
-            display.classList.add('rolling-fast');
-            
-            const faces = ['🎲', '⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
-            let count = 0;
-            
-            const interval = setInterval(() => {
-                display.textContent = faces[Math.floor(Math.random() * 6) + 1];
-                count++;
-                
-                if (count >= 10) {
-                    clearInterval(interval);
-                    display.textContent = faces[number];
-                    display.classList.remove('rolling-fast');
-                    
+            const dice = document.getElementById('diceDisplay');
+            dice.classList.add('shaking');
+
+            const faces = ['⚀','⚁','⚂','⚃','⚄','⚅'];
+            let i = 0;
+            const iv = setInterval(() => {
+                dice.textContent = faces[Math.floor(Math.random() * 6)];
+                i++;
+                if (i >= 8) {
+                    clearInterval(iv);
+                    dice.textContent = faces[num - 1];
+                    dice.classList.remove('shaking');
                     setTimeout(() => {
-                        tg.sendData(JSON.stringify({ command: 'dice', bet: bet, number: number }));
+                        tg.sendData(JSON.stringify({ command: 'dice', bet: bet, number: num }));
                         closeDice();
-                        megaConfetti(80);
+                        confetti(55);
                         tg.HapticFeedback.notificationOccurred('success');
-                        showToast('🎲 БРОСОК СДЕЛАН!');
-                        
-                        // Визуал победы
-                        const overlay = document.getElementById('winOverlay');
-                        overlay.innerHTML = '<div class="win-text">🎉</div>';
-                        setTimeout(() => overlay.innerHTML = '', 1000);
-                    }, 400);
+                        toast('🎲 БРОСОК!');
+                    }, 350);
                 }
-            }, 60);
+            }, 65);
         }
 
-        // ===== ОТСЛЕЖИВАНИЕ МЫШИ ДЛЯ КНОПОК =====
-        document.querySelectorAll('.game-btn').forEach(btn => {
-            btn.addEventListener('mousemove', (e) => {
-                const rect = btn.getBoundingClientRect();
-                btn.style.setProperty('--x', (e.clientX - rect.left) + 'px');
-                btn.style.setProperty('--y', (e.clientY - rect.top) + 'px');
-            });
-            btn.addEventListener('mouseleave', () => {
-                btn.style.setProperty('--x', '50%');
-                btn.style.setProperty('--y', '50%');
-            });
-        });
-
-        // ===== НИЖНЕЕ МЕНЮ =====
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.addEventListener('click', function() {
-                document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+        // Нижнее меню
+        document.querySelectorAll('.nav-item').forEach(el => {
+            el.addEventListener('click', function() {
+                document.querySelectorAll('.nav-item').forEach(e => e.classList.remove('active'));
                 this.classList.add('active');
                 tg.HapticFeedback.impactOccurred('light');
-                showToast('📱 СКОРО');
+                toast('📱 СКОРО');
             });
         });
-
-        // ===== АНИМАЦИЯ ЧИСЕЛ ПРИ НАЖАТИИ =====
-        document.querySelectorAll('.num-btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                const ripple = document.createElement('div');
-                ripple.className = 'num-ripple';
-                ripple.style.left = (e.offsetX) + 'px';
-                ripple.style.top = (e.offsetY) + 'px';
-                ripple.style.width = ripple.style.height = '20px';
-                this.appendChild(ripple);
-                setTimeout(() => ripple.remove(), 600);
-            });
-        });
-
-        // Скрыть системный курсор на десктопе
-        if (window.matchMedia('(pointer: fine)').matches) {
-            document.body.style.cursor = 'none';
-        }
     </script>
 </body>
 </html>
