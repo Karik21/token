@@ -35,28 +35,21 @@
             cursor: none;
         }
 
-        /* КАСТОМНЫЙ КУРСОР */
         .cursor {
-            width: 30px;
-            height: 30px;
+            width: 30px; height: 30px;
             border: 2px solid var(--accent2);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
+            border-radius: 50%; position: fixed;
+            pointer-events: none; z-index: 9999;
             transition: transform 0.15s, border-color 0.3s;
             mix-blend-mode: difference;
             transform: translate(-50%, -50%);
         }
 
         .cursor-dot {
-            width: 6px;
-            height: 6px;
+            width: 6px; height: 6px;
             background: var(--accent2);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
+            border-radius: 50%; position: fixed;
+            pointer-events: none; z-index: 9999;
             transform: translate(-50%, -50%);
             box-shadow: 0 0 15px var(--accent2);
         }
@@ -64,31 +57,17 @@
         .cursor.clicking { transform: translate(-50%, -50%) scale(0.5); }
         .cursor.hovering { transform: translate(-50%, -50%) scale(1.8); border-color: var(--pink); }
 
-        /* ЗВЁЗДНОЕ НЕБО С ДВИЖЕНИЕМ */
-        .galaxy {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 0;
-        }
+        .galaxy { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
 
         .star-layer {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             animation: rotateGalaxy var(--speed) linear infinite;
         }
 
-        @keyframes rotateGalaxy {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
+        @keyframes rotateGalaxy { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
         .star-dot {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
+            position: absolute; background: white; border-radius: 50%;
             animation: glowPulse var(--glow-speed) ease-in-out infinite;
         }
 
@@ -97,36 +76,15 @@
             50% { box-shadow: 0 0 8px rgba(168,127,250,0.8), 0 0 20px rgba(168,127,250,0.4); }
         }
 
-        /* НЕБУЛА НА ФОНЕ */
         .nebula {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.15;
-            pointer-events: none;
-            z-index: 0;
+            position: fixed; border-radius: 50%; filter: blur(80px);
+            opacity: 0.15; pointer-events: none; z-index: 0;
             animation: nebulaMove 20s ease-in-out infinite;
         }
 
-        .nebula-1 {
-            width: 400px; height: 400px;
-            background: radial-gradient(circle, var(--accent), transparent);
-            top: -10%; left: -10%;
-        }
-
-        .nebula-2 {
-            width: 350px; height: 350px;
-            background: radial-gradient(circle, var(--pink), transparent);
-            bottom: -10%; right: -10%;
-            animation-delay: -10s;
-        }
-
-        .nebula-3 {
-            width: 300px; height: 300px;
-            background: radial-gradient(circle, var(--cyan), transparent);
-            top: 50%; left: 50%;
-            animation-delay: -5s;
-        }
+        .nebula-1 { width: 400px; height: 400px; background: radial-gradient(circle, var(--accent), transparent); top: -10%; left: -10%; }
+        .nebula-2 { width: 350px; height: 350px; background: radial-gradient(circle, var(--pink), transparent); bottom: -10%; right: -10%; animation-delay: -10s; }
+        .nebula-3 { width: 300px; height: 300px; background: radial-gradient(circle, var(--cyan), transparent); top: 50%; left: 50%; animation-delay: -5s; }
 
         @keyframes nebulaMove {
             0%, 100% { transform: translate(0, 0) scale(1); }
@@ -135,40 +93,19 @@
             75% { transform: translate(-50px, -20px) scale(1.1); }
         }
 
-        .container {
-            position: relative;
-            z-index: 1;
-            width: 92%;
-            max-width: 420px;
-            margin: 0 auto;
-            padding: 20px 0 100px;
-        }
+        .container { position: relative; z-index: 1; width: 92%; max-width: 420px; margin: 0 auto; padding: 20px 0 100px; }
 
-        /* ШАПКА */
-        .header {
-            text-align: center;
-            margin-bottom: 35px;
-            animation: headerEntrance 1s cubic-bezier(0.16, 1, 0.3, 1);
-        }
+        .header { text-align: center; margin-bottom: 35px; animation: headerEntrance 1s cubic-bezier(0.16, 1, 0.3, 1); }
 
-        @keyframes headerEntrance {
-            from { opacity: 0; transform: translateY(-40px); filter: blur(10px); }
-            to { opacity: 1; transform: translateY(0); filter: blur(0); }
-        }
+        @keyframes headerEntrance { from { opacity: 0; transform: translateY(-40px); filter: blur(10px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
 
-        .logo-container {
-            position: relative;
-            display: inline-block;
-            margin-bottom: 10px;
-        }
+        .logo-container { position: relative; display: inline-block; margin-bottom: 10px; }
 
         .logo-icon {
-            font-size: 80px;
-            display: block;
+            font-size: 80px; display: block;
             animation: logoFloat 3s ease-in-out infinite, logoGlow 2s ease-in-out infinite;
             filter: drop-shadow(0 0 30px rgba(139,92,246,0.6));
-            position: relative;
-            z-index: 2;
+            position: relative; z-index: 2;
         }
 
         @keyframes logoFloat {
@@ -184,26 +121,13 @@
         }
 
         .logo-rings {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100px;
-            height: 100px;
-            border: 2px solid rgba(139,92,246,0.3);
-            border-radius: 50%;
-            animation: ringPulse 2s ease-in-out infinite;
-            z-index: 1;
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 100px; height: 100px; border: 2px solid rgba(139,92,246,0.3);
+            border-radius: 50%; animation: ringPulse 2s ease-in-out infinite; z-index: 1;
         }
 
-        .logo-rings:nth-child(2) {
-            animation-delay: -0.7s;
-            border-color: rgba(236,72,153,0.3);
-        }
-
-        .logo-rings:nth-child(3) {
-            animation-delay: -1.4s;
-            border-color: rgba(6,182,212,0.3);
-        }
+        .logo-rings:nth-child(2) { animation-delay: -0.7s; border-color: rgba(236,72,153,0.3); }
+        .logo-rings:nth-child(3) { animation-delay: -1.4s; border-color: rgba(6,182,212,0.3); }
 
         @keyframes ringPulse {
             0%, 100% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.5; }
@@ -211,72 +135,38 @@
         }
 
         .logo-text {
-            font-size: 38px;
-            font-weight: 900;
+            font-size: 38px; font-weight: 900;
             background: linear-gradient(135deg, var(--accent2), var(--pink), var(--gold), var(--cyan));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 4px;
-            animation: textShimmer 4s ease-in-out infinite;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            letter-spacing: 4px; animation: textShimmer 4s ease-in-out infinite;
             background-size: 300% 300%;
         }
 
-        @keyframes textShimmer {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
+        @keyframes textShimmer { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
 
-        .status-row {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            margin-top: 12px;
-            font-size: 13px;
-            font-weight: 600;
-        }
+        .status-row { display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 12px; font-size: 13px; font-weight: 600; }
 
         .status-indicator {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(255,255,255,0.05);
-            padding: 6px 14px;
-            border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.08);
+            display: flex; align-items: center; gap: 6px;
+            background: rgba(255,255,255,0.05); padding: 6px 14px;
+            border-radius: 20px; border: 1px solid rgba(255,255,255,0.08);
         }
 
         .live-dot {
-            width: 8px; height: 8px;
-            background: var(--green);
-            border-radius: 50%;
-            animation: livePulse 1.5s ease-in-out infinite;
-            box-shadow: 0 0 10px var(--green);
+            width: 8px; height: 8px; background: var(--green); border-radius: 50%;
+            animation: livePulse 1.5s ease-in-out infinite; box-shadow: 0 0 10px var(--green);
         }
 
-        @keyframes livePulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(1.8); }
-        }
+        @keyframes livePulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.8); } }
 
-        /* СЕТКА КНОПОК */
-        .game-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 14px;
-        }
+        .game-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
         .game-btn {
-            background: var(--card);
-            backdrop-filter: blur(30px);
-            border: 1px solid var(--border);
-            border-radius: 28px;
-            padding: 30px 14px;
-            text-align: center;
-            cursor: pointer;
+            background: var(--card); backdrop-filter: blur(30px);
+            border: 1px solid var(--border); border-radius: 28px;
+            padding: 30px 14px; text-align: center; cursor: pointer;
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative;
-            overflow: hidden;
+            position: relative; overflow: hidden;
             animation: cardEntrance 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
         }
 
@@ -287,473 +177,112 @@
         .game-btn:nth-child(5) { animation-delay: 0.5s; }
         .game-btn:nth-child(6) { animation-delay: 0.6s; }
 
-        @keyframes cardEntrance {
-            from { opacity: 0; transform: translateY(30px) scale(0.8) rotateY(20deg); }
-            to { opacity: 1; transform: translateY(0) scale(1) rotateY(0deg); }
-        }
+        @keyframes cardEntrance { from { opacity: 0; transform: translateY(30px) scale(0.8) rotateY(20deg); } to { opacity: 1; transform: translateY(0) scale(1) rotateY(0deg); } }
 
         .game-btn::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(600px circle at var(--x, 50%) var(--y, 50%), 
-                        rgba(139,92,246,0.3) 0%, transparent 50%);
-            opacity: 0;
-            transition: opacity 0.3s;
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(600px circle at var(--x, 50%) var(--y, 50%), rgba(139,92,246,0.3) 0%, transparent 50%);
+            opacity: 0; transition: opacity 0.3s;
         }
 
         .game-btn:hover::before { opacity: 1; }
 
         .game-btn::after {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
             transition: left 0.5s;
         }
 
         .game-btn:active::after { left: 100%; }
 
-        .game-btn:active {
-            transform: scale(0.9);
-            border-color: var(--accent2);
-            box-shadow: 0 0 40px rgba(139,92,246,0.4), inset 0 0 30px rgba(139,92,246,0.1);
-        }
+        .game-btn:active { transform: scale(0.9); border-color: var(--accent2); box-shadow: 0 0 40px rgba(139,92,246,0.4), inset 0 0 30px rgba(139,92,246,0.1); }
 
-        .game-btn .btn-icon {
-            font-size: 52px;
-            display: block;
-            margin-bottom: 12px;
-            position: relative;
-            z-index: 1;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
+        .game-btn .btn-icon { font-size: 52px; display: block; margin-bottom: 12px; position: relative; z-index: 1; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
 
-        .game-btn:active .btn-icon {
-            transform: scale(1.3) rotate(15deg);
-            animation: iconBounce 0.5s ease-out;
-        }
+        .game-btn:active .btn-icon { transform: scale(1.3) rotate(15deg); animation: iconBounce 0.5s ease-out; }
 
-        @keyframes iconBounce {
-            0% { transform: scale(1); }
-            30% { transform: scale(1.4) rotate(-10deg); }
-            60% { transform: scale(0.9) rotate(5deg); }
-            100% { transform: scale(1) rotate(0deg); }
-        }
+        @keyframes iconBounce { 0% { transform: scale(1); } 30% { transform: scale(1.4) rotate(-10deg); } 60% { transform: scale(0.9) rotate(5deg); } 100% { transform: scale(1) rotate(0deg); } }
 
-        .game-btn .btn-title {
-            font-size: 18px;
-            font-weight: 800;
-            letter-spacing: 2px;
-            position: relative;
-            z-index: 1;
-        }
+        .game-btn .btn-title { font-size: 18px; font-weight: 800; letter-spacing: 2px; position: relative; z-index: 1; }
 
-        .badge-live {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            background: var(--pink);
-            color: white;
-            font-size: 10px;
-            font-weight: 800;
-            padding: 5px 10px;
-            border-radius: 20px;
-            z-index: 2;
-            animation: badgeShake 3s ease-in-out infinite;
-        }
+        .badge-live { position: absolute; top: 12px; right: 12px; background: var(--pink); color: white; font-size: 10px; font-weight: 800; padding: 5px 10px; border-radius: 20px; z-index: 2; animation: badgeShake 3s ease-in-out infinite; }
 
-        .badge-hot {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            background: var(--red);
-            color: white;
-            font-size: 10px;
-            font-weight: 800;
-            padding: 5px 10px;
-            border-radius: 20px;
-            z-index: 2;
-            animation: badgeGlow 1s ease-in-out infinite;
-        }
+        .badge-hot { position: absolute; top: 12px; right: 12px; background: var(--red); color: white; font-size: 10px; font-weight: 800; padding: 5px 10px; border-radius: 20px; z-index: 2; animation: badgeGlow 1s ease-in-out infinite; }
 
-        @keyframes badgeShake {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(-5deg); }
-            75% { transform: rotate(5deg); }
-        }
+        @keyframes badgeShake { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-5deg); } 75% { transform: rotate(5deg); } }
+        @keyframes badgeGlow { 0%, 100% { box-shadow: 0 0 10px var(--red); } 50% { box-shadow: 0 0 25px var(--red), 0 0 40px rgba(239,68,68,0.5); } }
 
-        @keyframes badgeGlow {
-            0%, 100% { box-shadow: 0 0 10px var(--red); }
-            50% { box-shadow: 0 0 25px var(--red), 0 0 40px rgba(239,68,68,0.5); }
-        }
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.95); backdrop-filter: blur(30px); display: flex; align-items: center; justify-content: center; z-index: 100; visibility: hidden; opacity: 0; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .modal-overlay.show { visibility: visible; opacity: 1; }
 
-        /* МОДАЛКА */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.95);
-            backdrop-filter: blur(30px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
-            visibility: hidden;
-            opacity: 0;
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        }
+        .modal-dialog { background: linear-gradient(160deg, #0f0720, #1a0a2e, #0d0520); border: 1px solid rgba(139,92,246,0.3); border-radius: 36px; padding: 35px 28px; width: 88%; max-width: 370px; text-align: center; transform: scale(0.7) translateY(60px) rotateX(20deg); transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 40px 80px rgba(0,0,0,0.8), 0 0 100px rgba(139,92,246,0.2), inset 0 1px 0 rgba(255,255,255,0.05); position: relative; }
+        .modal-overlay.show .modal-dialog { transform: scale(1) translateY(0) rotateX(0deg); }
 
-        .modal-overlay.show {
-            visibility: visible;
-            opacity: 1;
-        }
+        .modal-glow { position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at center, rgba(139,92,246,0.1), transparent 60%); pointer-events: none; }
 
-        .modal-dialog {
-            background: linear-gradient(160deg, #0f0720, #1a0a2e, #0d0520);
-            border: 1px solid rgba(139,92,246,0.3);
-            border-radius: 36px;
-            padding: 35px 28px;
-            width: 88%;
-            max-width: 370px;
-            text-align: center;
-            transform: scale(0.7) translateY(60px) rotateX(20deg);
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 40px 80px rgba(0,0,0,0.8), 0 0 100px rgba(139,92,246,0.2),
-                        inset 0 1px 0 rgba(255,255,255,0.05);
-            position: relative;
-        }
+        .modal-title { font-size: 26px; font-weight: 900; margin-bottom: 25px; background: linear-gradient(135deg, var(--accent2), var(--pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; position: relative; z-index: 1; }
 
-        .modal-overlay.show .modal-dialog {
-            transform: scale(1) translateY(0) rotateX(0deg);
-        }
+        .dice-stage { position: relative; z-index: 1; margin: 20px 0; }
 
-        .modal-glow {
-            position: absolute;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: radial-gradient(circle at center, rgba(139,92,246,0.1), transparent 60%);
-            pointer-events: none;
-        }
+        .dice-3d { font-size: 100px; display: inline-block; animation: diceFloat 2s ease-in-out infinite; filter: drop-shadow(0 20px 30px rgba(139,92,246,0.5)); }
 
-        .modal-title {
-            font-size: 26px;
-            font-weight: 900;
-            margin-bottom: 25px;
-            background: linear-gradient(135deg, var(--accent2), var(--pink));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            position: relative;
-            z-index: 1;
-        }
+        @keyframes diceFloat { 0%, 100% { transform: translateY(0) rotateY(0deg); } 50% { transform: translateY(-15px) rotateY(15deg); } }
+        .dice-3d.rolling-fast { animation: diceRollFast 0.8s ease-out; }
 
-        .dice-stage {
-            position: relative;
-            z-index: 1;
-            margin: 20px 0;
-        }
+        @keyframes diceRollFast { 0% { transform: rotate(0deg) scale(0); } 30% { transform: rotate(200deg) scale(1.4); } 60% { transform: rotate(400deg) scale(0.9); } 100% { transform: rotate(720deg) scale(1); } }
 
-        .dice-3d {
-            font-size: 100px;
-            display: inline-block;
-            animation: diceFloat 2s ease-in-out infinite;
-            filter: drop-shadow(0 20px 30px rgba(139,92,246,0.5));
-        }
+        .bet-label { font-size: 13px; opacity: 0.6; letter-spacing: 2px; margin-bottom: 5px; }
+        .bet-value { font-size: 28px; font-weight: 900; background: linear-gradient(135deg, var(--gold), #fde047); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 30px rgba(251,191,36,0.3); }
 
-        @keyframes diceFloat {
-            0%, 100% { transform: translateY(0) rotateY(0deg); }
-            50% { transform: translateY(-15px) rotateY(15deg); }
-        }
+        .num-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 25px 0; position: relative; z-index: 1; }
 
-        .dice-3d.rolling-fast {
-            animation: diceRollFast 0.8s ease-out;
-        }
+        .num-btn { background: rgba(255,255,255,0.04); border: 2px solid rgba(255,255,255,0.08); color: white; padding: 18px; border-radius: 18px; font-size: 26px; font-weight: 900; cursor: pointer; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); position: relative; overflow: hidden; }
 
-        @keyframes diceRollFast {
-            0% { transform: rotate(0deg) scale(0); }
-            30% { transform: rotate(200deg) scale(1.4); }
-            60% { transform: rotate(400deg) scale(0.9); }
-            100% { transform: rotate(720deg) scale(1); }
-        }
+        .num-btn:hover { border-color: var(--accent2); background: rgba(139,92,246,0.2); transform: translateY(-3px); box-shadow: 0 10px 30px rgba(139,92,246,0.3); }
+        .num-btn:active { transform: scale(0.8); background: var(--accent); border-color: var(--accent2); box-shadow: 0 0 50px rgba(139,92,246,0.7), 0 0 80px rgba(236,72,153,0.3); transition: all 0.1s; }
 
-        .bet-label {
-            font-size: 13px;
-            opacity: 0.6;
-            letter-spacing: 2px;
-            margin-bottom: 5px;
-        }
-
-        .bet-value {
-            font-size: 28px;
-            font-weight: 900;
-            background: linear-gradient(135deg, var(--gold), #fde047);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 30px rgba(251,191,36,0.3);
-        }
-
-        .num-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin: 25px 0;
-            position: relative;
-            z-index: 1;
-        }
-
-        .num-btn {
-            background: rgba(255,255,255,0.04);
-            border: 2px solid rgba(255,255,255,0.08);
-            color: white;
-            padding: 18px;
-            border-radius: 18px;
-            font-size: 26px;
-            font-weight: 900;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .num-btn:hover {
-            border-color: var(--accent2);
-            background: rgba(139,92,246,0.2);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(139,92,246,0.3);
-        }
-
-        .num-btn:active {
-            transform: scale(0.8);
-            background: var(--accent);
-            border-color: var(--accent2);
-            box-shadow: 0 0 50px rgba(139,92,246,0.7), 0 0 80px rgba(236,72,153,0.3);
-            transition: all 0.1s;
-        }
-
-        .num-btn .num-ripple {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.4);
-            transform: scale(0);
-            animation: numRipple 0.6s ease-out;
-        }
-
-        @keyframes numRipple {
-            to { transform: scale(3); opacity: 0; }
-        }
-
-        .btn-gradient {
-            background: linear-gradient(135deg, var(--accent), var(--pink));
-            border: none;
-            color: white;
-            padding: 17px;
-            border-radius: 18px;
-            font-size: 17px;
-            font-weight: 800;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 14px;
-            letter-spacing: 2px;
-            transition: all 0.3s;
-            box-shadow: 0 15px 40px rgba(139,92,246,0.4);
-            position: relative;
-            z-index: 1;
-            overflow: hidden;
-        }
-
-        .btn-gradient::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.6s;
-        }
-
+        .btn-gradient { background: linear-gradient(135deg, var(--accent), var(--pink)); border: none; color: white; padding: 17px; border-radius: 18px; font-size: 17px; font-weight: 800; cursor: pointer; width: 100%; margin-top: 14px; letter-spacing: 2px; transition: all 0.3s; box-shadow: 0 15px 40px rgba(139,92,246,0.4); position: relative; z-index: 1; overflow: hidden; }
+        .btn-gradient::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: left 0.6s; }
         .btn-gradient:hover::before { left: 100%; }
+        .btn-gradient:active { transform: scale(0.94); box-shadow: 0 5px 20px rgba(139,92,246,0.6); }
 
-        .btn-gradient:active {
-            transform: scale(0.94);
-            box-shadow: 0 5px 20px rgba(139,92,246,0.6);
-        }
+        .btn-ghost { background: rgba(255,255,255,0.06); margin-top: 8px; box-shadow: none; border: 1px solid rgba(255,255,255,0.1); }
 
-        .btn-ghost {
-            background: rgba(255,255,255,0.06);
-            margin-top: 8px;
-            box-shadow: none;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        /* ПОЛЗУНОК */
         .slider-wrapper { position: relative; z-index: 1; margin: 15px 0; }
 
-        input[type=range] {
-            -webkit-appearance: none;
-            width: 100%;
-            height: 8px;
-            border-radius: 4px;
-            background: linear-gradient(90deg, var(--accent), var(--pink));
-            outline: none;
-        }
+        input[type=range] { -webkit-appearance: none; width: 100%; height: 8px; border-radius: 4px; background: linear-gradient(90deg, var(--accent), var(--pink)); outline: none; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 32px; height: 32px; border-radius: 50%; background: white; cursor: pointer; border: 3px solid var(--accent); box-shadow: 0 0 25px rgba(139,92,246,0.7); transition: all 0.2s; }
+        input[type=range]::-webkit-slider-thumb:active { transform: scale(1.3); box-shadow: 0 0 40px rgba(236,72,153,0.9); }
 
-        input[type=range]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 32px; height: 32px;
-            border-radius: 50%;
-            background: white;
-            cursor: pointer;
-            border: 3px solid var(--accent);
-            box-shadow: 0 0 25px rgba(139,92,246,0.7);
-            transition: all 0.2s;
-        }
+        .toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 300; display: flex; flex-direction: column; gap: 8px; }
+        .toast { background: rgba(15,7,32,0.95); backdrop-filter: blur(20px); border: 1px solid rgba(139,92,246,0.3); color: white; padding: 14px 24px; border-radius: 50px; font-weight: 700; font-size: 14px; white-space: nowrap; animation: toastIn 0.5s cubic-bezier(0.16, 1, 0.3, 1), toastOut 0.5s 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; box-shadow: 0 10px 30px rgba(139,92,246,0.3); }
+        @keyframes toastIn { from { transform: translateY(-30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes toastOut { from { transform: translateY(0); opacity: 1; } to { transform: translateY(-30px); opacity: 0; } }
 
-        input[type=range]::-webkit-slider-thumb:active {
-            transform: scale(1.3);
-            box-shadow: 0 0 40px rgba(236,72,153,0.9);
-        }
+        .confetti-piece { position: fixed; pointer-events: none; z-index: 250; animation: confettiExplosion var(--dur) cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
+        @keyframes confettiExplosion { 0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; } 100% { transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(0); opacity: 0; } }
 
-        /* ТОСТ */
-        .toast-container {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 300;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .toast {
-            background: rgba(15,7,32,0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(139,92,246,0.3);
-            color: white;
-            padding: 14px 24px;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 14px;
-            white-space: nowrap;
-            animation: toastIn 0.5s cubic-bezier(0.16, 1, 0.3, 1), toastOut 0.5s 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            box-shadow: 0 10px 30px rgba(139,92,246,0.3);
-        }
-
-        @keyframes toastIn {
-            from { transform: translateY(-30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        @keyframes toastOut {
-            from { transform: translateY(0); opacity: 1; }
-            to { transform: translateY(-30px); opacity: 0; }
-        }
-
-        /* КОНФЕТТИ 2.0 */
-        .confetti-piece {
-            position: fixed;
-            pointer-events: none;
-            z-index: 250;
-            animation: confettiExplosion var(--dur) cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-        }
-
-        @keyframes confettiExplosion {
-            0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
-            100% { transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(0); opacity: 0; }
-        }
-
-        /* ЭКРАН ПОБЕДЫ */
-        .win-overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 200;
-            pointer-events: none;
-        }
-
-        .win-text {
-            font-size: 60px;
-            font-weight: 900;
-            animation: winPop 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            pointer-events: none;
-        }
-
-        @keyframes winPop {
-            0% { transform: scale(0) rotate(-30deg); opacity: 0; }
-            40% { transform: scale(1.3) rotate(5deg); opacity: 1; }
-            100% { transform: scale(1) rotate(0deg); opacity: 0; }
-        }
-
-        /* НИЖНЕЕ МЕНЮ */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0; left: 0; right: 0;
-            background: rgba(3,7,18,0.95);
-            backdrop-filter: blur(30px);
-            display: flex;
-            justify-content: space-around;
-            padding: 14px 10px 22px;
-            border-top: 1px solid rgba(139,92,246,0.1);
-            z-index: 50;
-        }
-
-        .nav-item {
-            text-align: center;
-            cursor: pointer;
-            opacity: 0.4;
-            transition: all 0.3s;
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(3,7,18,0.95); backdrop-filter: blur(30px); display: flex; justify-content: space-around; padding: 14px 10px 22px; border-top: 1px solid rgba(139,92,246,0.1); z-index: 50; }
+        .nav-item { text-align: center; cursor: pointer; opacity: 0.4; transition: all 0.3s; font-size: 10px; font-weight: 700; letter-spacing: 1px; }
         .nav-item.active { opacity: 1; color: var(--accent2); }
-
-        .nav-icon {
-            font-size: 26px;
-            display: block;
-            margin-bottom: 4px;
-            transition: transform 0.3s;
-        }
-
+        .nav-icon { font-size: 26px; display: block; margin-bottom: 4px; transition: transform 0.3s; }
         .nav-item:active .nav-icon { transform: scale(1.4) rotate(10deg); }
 
-        /* ЧАСТИЦЫ ПРИ КЛИКЕ */
-        .click-particle {
-            position: fixed;
-            pointer-events: none;
-            z-index: 280;
-            animation: clickBurst 0.8s ease-out forwards;
-        }
-
-        @keyframes clickBurst {
-            0% { transform: translate(0, 0) scale(1); opacity: 1; }
-            100% { transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0; }
-        }
+        .click-particle { position: fixed; pointer-events: none; z-index: 280; animation: clickBurst 0.8s ease-out forwards; }
+        @keyframes clickBurst { 0% { transform: translate(0, 0) scale(1); opacity: 1; } 100% { transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0; } }
     </style>
 </head>
 <body>
-    <!-- Кастомный курсор -->
     <div class="cursor" id="cursor"></div>
     <div class="cursor-dot" id="cursorDot"></div>
-
-    <!-- Галактика -->
     <div class="galaxy" id="galaxy"></div>
-
-    <!-- Небулы -->
     <div class="nebula nebula-1"></div>
     <div class="nebula nebula-2"></div>
     <div class="nebula nebula-3"></div>
-
-    <!-- Тосты -->
     <div class="toast-container" id="toastContainer"></div>
-
-    <!-- Визуал победы -->
     <div class="win-overlay" id="winOverlay"></div>
 
     <div class="container">
-        <!-- Шапка -->
         <div class="header">
             <div class="logo-container">
                 <div class="logo-rings"></div>
@@ -763,62 +292,28 @@
             </div>
             <h1 class="logo-text">TOKEN FORTUNE</h1>
             <div class="status-row">
-                <div class="status-indicator">
-                    <span class="live-dot"></span> ОНЛАЙН
-                </div>
+                <div class="status-indicator"><span class="live-dot"></span> ОНЛАЙН</div>
             </div>
         </div>
 
-        <!-- Кнопки -->
         <div class="game-grid">
-            <div class="game-btn" onclick="openDice()">
-                <span class="badge-hot">ГОРЯЧО</span>
-                <span class="btn-icon">🎲</span>
-                <div class="btn-title">КОСТИ</div>
-            </div>
-
-            <div class="game-btn" onclick="sendCmd('join_contest')">
-                <span class="badge-live">LIVE</span>
-                <span class="btn-icon">🏆</span>
-                <div class="btn-title">КОНКУРС</div>
-            </div>
-
-            <div class="game-btn" onclick="sendCmd('bonus')">
-                <span class="btn-icon">🎁</span>
-                <div class="btn-title">БОНУС</div>
-            </div>
-
-            <div class="game-btn" onclick="sendCmd('stats')">
-                <span class="btn-icon">📊</span>
-                <div class="btn-title">СТАТИСТИКА</div>
-            </div>
-
-            <div class="game-btn" onclick="sendCmd('achievements')">
-                <span class="btn-icon">🏅</span>
-                <div class="btn-title">ДОСТИЖЕНИЯ</div>
-            </div>
-
-            <div class="game-btn" onclick="sendCmd('help')">
-                <span class="btn-icon">ℹ️</span>
-                <div class="btn-title">ПОМОЩЬ</div>
-            </div>
+            <div class="game-btn" onclick="openDice()"><span class="badge-hot">ГОРЯЧО</span><span class="btn-icon">🎲</span><div class="btn-title">КОСТИ</div></div>
+            <div class="game-btn" onclick="sendCmd('join_contest')"><span class="badge-live">LIVE</span><span class="btn-icon">🏆</span><div class="btn-title">КОНКУРС</div></div>
+            <div class="game-btn" onclick="sendCmd('bonus')"><span class="btn-icon">🎁</span><div class="btn-title">БОНУС</div></div>
+            <div class="game-btn" onclick="sendCmd('stats')"><span class="btn-icon">📊</span><div class="btn-title">СТАТИСТИКА</div></div>
+            <div class="game-btn" onclick="sendCmd('achievements')"><span class="btn-icon">🏅</span><div class="btn-title">ДОСТИЖЕНИЯ</div></div>
+            <div class="game-btn" onclick="sendCmd('help')"><span class="btn-icon">ℹ️</span><div class="btn-title">ПОМОЩЬ</div></div>
         </div>
     </div>
 
-    <!-- Модалка КОСТИ -->
     <div class="modal-overlay" id="diceModal">
         <div class="modal-dialog">
             <div class="modal-glow"></div>
             <h2 class="modal-title">🎲 БРОСОК КОСТЕЙ</h2>
-            <div class="dice-stage">
-                <span class="dice-3d" id="diceDisplay">🎲</span>
-            </div>
+            <div class="dice-stage"><span class="dice-3d" id="diceDisplay">🎲</span></div>
             <div class="bet-label">СТАВКА</div>
             <div class="bet-value" id="betVal">100</div>
-            <div class="slider-wrapper">
-                <input type="range" min="10" max="100000" value="100" id="betSlider"
-                       oninput="updateBet(this.value)">
-            </div>
+            <div class="slider-wrapper"><input type="range" min="10" max="100000" value="100" id="betSlider" oninput="updateBet(this.value)"></div>
             <p style="margin-top: 18px; font-weight: 700; letter-spacing: 1px;">ВЫБЕРИ ЧИСЛО</p>
             <div class="num-grid">
                 <button class="num-btn" onclick="rollDice(1)">1</button>
@@ -832,7 +327,6 @@
         </div>
     </div>
 
-    <!-- Нижнее меню -->
     <div class="bottom-nav">
         <div class="nav-item active"><span class="nav-icon">🏠</span>ГЛАВНАЯ</div>
         <div class="nav-item"><span class="nav-icon">🏆</span>РЕЙТИНГ</div>
@@ -845,7 +339,6 @@
         tg.expand();
         tg.ready();
 
-        // ===== КАСТОМНЫЙ КУРСОР =====
         const cursor = document.getElementById('cursor');
         const cursorDot = document.getElementById('cursorDot');
         
@@ -864,14 +357,12 @@
             el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
         });
 
-        // ===== ГАЛАКТИКА =====
         function createGalaxy() {
             const galaxy = document.getElementById('galaxy');
             for (let layer = 0; layer < 3; layer++) {
                 const layerDiv = document.createElement('div');
                 layerDiv.className = 'star-layer';
                 layerDiv.style.setProperty('--speed', (30 + layer * 15) + 's');
-                
                 for (let i = 0; i < 50; i++) {
                     const star = document.createElement('div');
                     star.className = 'star-dot';
@@ -888,7 +379,6 @@
         }
         createGalaxy();
 
-        // ===== ТОСТ =====
         function showToast(text) {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
@@ -898,10 +388,8 @@
             setTimeout(() => toast.remove(), 2000);
         }
 
-        // ===== КОНФЕТТИ 2.0 =====
         function megaConfetti(count = 60) {
             const emojis = ['✨', '💎', '🪙', '⭐', '🌟', '💰', '🎉', '🔥', '💫', '🎯', '💜', '🪄'];
-            
             for (let i = 0; i < count; i++) {
                 setTimeout(() => {
                     const el = document.createElement('div');
@@ -920,7 +408,6 @@
             }
         }
 
-        // ===== ЧАСТИЦЫ ПРИ КЛИКЕ =====
         function clickBurst(x, y) {
             for (let i = 0; i < 12; i++) {
                 const p = document.createElement('div');
@@ -937,16 +424,12 @@
             }
         }
 
-        document.addEventListener('click', (e) => {
-            clickBurst(e.clientX, e.clientY);
-        });
+        document.addEventListener('click', (e) => { clickBurst(e.clientX, e.clientY); });
 
-        // ===== ОТПРАВКА КОМАНД =====
         function sendCmd(cmd) {
-    tg.openTelegramLink(`https://t.me/TOKENFORTUNEbot?start=${cmd}`);
-    }
+            tg.openTelegramLink(`https://t.me/TOKENFORTUNEbot?start=${cmd}`);
+        }
 
-        // ===== КОСТИ =====
         function openDice() {
             document.getElementById('diceModal').classList.add('show');
             document.getElementById('diceDisplay').textContent = '🎲';
@@ -963,41 +446,26 @@
         }
 
         function rollDice(number) {
-    const bet = document.getElementById('betSlider').value;
-    const display = document.getElementById('diceDisplay');
-    
-    display.classList.add('rolling-fast');
-    
-    const faces = ['🎲', '⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
-    let count = 0;
-    
-    const interval = setInterval(() => {
-        display.textContent = faces[Math.floor(Math.random() * 6) + 1];
-        count++;
-        
-        if (count >= 10) {
-            clearInterval(interval);
-            display.textContent = faces[number];
-            display.classList.remove('rolling-fast');
-            
-            setTimeout(() => {
-                closeDice();
-                tg.openTelegramLink(`https://t.me/TOKENFORTUNEbot?start=dice_${bet}_${number}`);
-            }, 350);
-        }
-    }, 60);
-}
-                        
-                        // Визуал победы
-                        const overlay = document.getElementById('winOverlay');
-                        overlay.innerHTML = '<div class="win-text">🎉</div>';
-                        setTimeout(() => overlay.innerHTML = '', 1000);
-                    }, 400);
+            const bet = document.getElementById('betSlider').value;
+            const display = document.getElementById('diceDisplay');
+            display.classList.add('rolling-fast');
+            const faces = ['🎲', '⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
+            let count = 0;
+            const interval = setInterval(() => {
+                display.textContent = faces[Math.floor(Math.random() * 6) + 1];
+                count++;
+                if (count >= 10) {
+                    clearInterval(interval);
+                    display.textContent = faces[number];
+                    display.classList.remove('rolling-fast');
+                    setTimeout(() => {
+                        closeDice();
+                        tg.openTelegramLink(`https://t.me/TOKENFORTUNEbot?start=dice_${bet}_${number}`);
+                    }, 350);
                 }
             }, 60);
         }
 
-        // ===== ОТСЛЕЖИВАНИЕ МЫШИ ДЛЯ КНОПОК =====
         document.querySelectorAll('.game-btn').forEach(btn => {
             btn.addEventListener('mousemove', (e) => {
                 const rect = btn.getBoundingClientRect();
@@ -1010,7 +478,6 @@
             });
         });
 
-        // ===== НИЖНЕЕ МЕНЮ =====
         document.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', function() {
                 document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
@@ -1020,7 +487,6 @@
             });
         });
 
-        // ===== АНИМАЦИЯ ЧИСЕЛ ПРИ НАЖАТИИ =====
         document.querySelectorAll('.num-btn').forEach(btn => {
             btn.addEventListener('click', function(e) {
                 const ripple = document.createElement('div');
@@ -1033,7 +499,6 @@
             });
         });
 
-        // Скрыть системный курсор на десктопе
         if (window.matchMedia('(pointer: fine)').matches) {
             document.body.style.cursor = 'none';
         }
