@@ -1,138 +1,357 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Token Fortune</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      background: linear-gradient(135deg, #0a0a1a 0%, #1a1040 50%, #0d0d2b 100%);
-      color: white;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      min-height: 100vh;
-      display: flex; align-items: center; justify-content: center;
-      user-select: none; -webkit-user-select: none;
-    }
-    .container { width: 90%; max-width: 400px; padding: 20px 0 80px 0; }
-    .header { text-align: center; margin-bottom: 30px; }
-    .header h1 { font-size: 28px; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .header p { font-size: 14px; opacity: 0.6; margin-top: 5px; }
-    .game-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .game-btn {
-      background: rgba(255,255,255,0.05); backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.1); border-radius: 20px;
-      padding: 25px 10px; text-align: center; cursor: pointer; transition: all 0.25s;
-    }
-    .game-btn:active { transform: scale(0.94); background: rgba(255,255,255,0.12); }
-    .game-btn .emoji { font-size: 44px; display: block; margin-bottom: 12px; }
-    .game-btn .title { font-size: 18px; font-weight: 600; letter-spacing: 0.5px; }
-    .game-btn .subtitle { font-size: 12px; opacity: 0.55; margin-top: 4px; }
-    .modal {
-      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.75); backdrop-filter: blur(6px);
-      display: flex; align-items: center; justify-content: center; z-index: 100;
-      visibility: hidden; opacity: 0; transition: 0.25s;
-    }
-    .modal.active { visibility: visible; opacity: 1; }
-    .modal-content {
-      background: rgba(30,30,50,0.95); border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 24px; padding: 25px; width: 85%; max-width: 320px;
-      text-align: center; backdrop-filter: blur(20px);
-    }
-    .modal-content h3 { margin-bottom: 15px; font-size: 20px; }
-    .number-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 15px 0; }
-    .number-btn {
-      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2);
-      color: white; padding: 14px; border-radius: 14px; font-size: 22px; cursor: pointer; transition: 0.2s;
-    }
-    .number-btn:active { background: rgba(102,126,234,0.4); transform: scale(0.9); }
-    .btn {
-      background: linear-gradient(135deg, #667eea, #764ba2); border: none;
-      color: white; padding: 14px; border-radius: 14px; font-size: 16px;
-      font-weight: 600; cursor: pointer; width: 100%; margin-top: 12px;
-    }
-    .btn:active { transform: scale(0.95); }
-    .close-btn { background: rgba(255,255,255,0.15); margin-top: 8px; }
-    @keyframes confettiFall {
-      0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
-      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-    }
-    .particle {
-      position: fixed; width: 10px; height: 10px; border-radius: 50%;
-      animation: confettiFall 2s ease-in forwards; z-index: 200; pointer-events: none;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Token Fortune</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 380px;
+            padding: 30px 0 60px 0;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo .icon {
+            font-size: 64px;
+            display: block;
+            margin-bottom: 10px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .logo h1 {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #ffd700 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+        }
+
+        .game-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .game-btn {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 22px;
+            padding: 28px 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .game-btn:active::before {
+            opacity: 1;
+        }
+
+        .game-btn:active {
+            transform: scale(0.94);
+            border-color: rgba(255,255,255,0.3);
+        }
+
+        .game-btn .emoji {
+            font-size: 48px;
+            display: block;
+            margin-bottom: 14px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .game-btn .title {
+            font-size: 17px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            visibility: hidden;
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+        .modal.active {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: linear-gradient(145deg, #1a1a2e, #16213e);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 28px;
+            padding: 30px 25px;
+            width: 88%;
+            max-width: 340px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .modal-content h3 {
+            margin-bottom: 20px;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .number-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .number-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 16px;
+            border-radius: 16px;
+            font-size: 28px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: bold;
+        }
+
+        .number-btn:active {
+            background: rgba(240, 147, 251, 0.4);
+            border-color: #f093fb;
+            transform: scale(0.9);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border: none;
+            color: white;
+            padding: 16px;
+            border-radius: 16px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 14px;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+            filter: brightness(1.2);
+        }
+
+        .close-btn {
+            background: rgba(255, 255, 255, 0.12);
+            margin-top: 10px;
+        }
+
+        .bet-slider {
+            width: 100%;
+            margin: 15px 0;
+            -webkit-appearance: none;
+            height: 8px;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.2);
+            outline: none;
+        }
+
+        .bet-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #f093fb;
+            cursor: pointer;
+            border: 3px solid white;
+        }
+
+        .bet-display {
+            font-size: 20px;
+            font-weight: 700;
+            color: #ffd700;
+        }
+
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .particle {
+            position: fixed;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            animation: confettiFall 2.5s ease-in forwards;
+            z-index: 200;
+            pointer-events: none;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <h1>🎲 TOKEN FORTUNE</h1>
-      <p>Пульт управления</p>
+    <div class="container">
+        <div class="logo">
+            <span class="icon">🎲</span>
+            <h1>TOKEN FORTUNE</h1>
+        </div>
+
+        <div class="game-grid">
+            <div class="game-btn" onclick="openDiceModal()">
+                <span class="emoji">🎲</span>
+                <div class="title">КОСТИ</div>
+            </div>
+
+            <div class="game-btn" onclick="sendCommand('join_contest')">
+                <span class="emoji">🏆</span>
+                <div class="title">КОНКУРС</div>
+            </div>
+
+            <div class="game-btn" onclick="sendCommand('bonus')">
+                <span class="emoji">🎁</span>
+                <div class="title">БОНУС</div>
+            </div>
+
+            <div class="game-btn" onclick="sendCommand('stats')">
+                <span class="emoji">📊</span>
+                <div class="title">СТАТИСТИКА</div>
+            </div>
+
+            <div class="game-btn" onclick="sendCommand('achievements')">
+                <span class="emoji">🏅</span>
+                <div class="title">ДОСТИЖЕНИЯ</div>
+            </div>
+
+            <div class="game-btn" onclick="sendCommand('help')">
+                <span class="emoji">ℹ️</span>
+                <div class="title">ПОМОЩЬ</div>
+            </div>
+        </div>
     </div>
-    <div class="game-grid">
-      <div class="game-btn" onclick="openDiceModal()"><span class="emoji">🎲</span><div class="title">КОСТИ</div><div class="subtitle">Бросить</div></div>
-      <div class="game-btn" onclick="sendCommand('join_contest')"><span class="emoji">🏆</span><div class="title">КОНКУРС</div><div class="subtitle">Участвовать</div></div>
-      <div class="game-btn" onclick="sendCommand('bonus')"><span class="emoji">⏰</span><div class="title">БОНУС</div><div class="subtitle">Забрать</div></div>
-      <div class="game-btn" onclick="sendCommand('stats')"><span class="emoji">📊</span><div class="title">СТАТИСТИКА</div><div class="subtitle">Мои успехи</div></div>
-      <div class="game-btn" onclick="sendCommand('achievements')"><span class="emoji">🏅</span><div class="title">ДОСТИЖЕНИЯ</div><div class="subtitle">Коллекция</div></div>
-      <div class="game-btn" onclick="sendCommand('help')"><span class="emoji">❓</span><div class="title">ПОМОЩЬ</div><div class="subtitle">Инструкция</div></div>
+
+    <!-- Модалка КОСТИ -->
+    <div class="modal" id="diceModal">
+        <div class="modal-content">
+            <h3>🎲 БРОСОК КОСТЕЙ</h3>
+            <div style="font-size: 60px; margin: 10px 0;">🎲</div>
+            <p style="margin-bottom: 8px;">Ставка: <span class="bet-display" id="betAmount">100</span></p>
+            <input type="range" min="10" max="100000" value="100" class="bet-slider" id="betSlider"
+            oninput="document.getElementById('betAmount').textContent = this.value">
+            <p style="margin-top: 18px;">ВЫБЕРИ ЧИСЛО:</p>
+            <div class="number-grid">
+                <button class="number-btn" onclick="rollDice(1)">1</button>
+                <button class="number-btn" onclick="rollDice(2)">2</button>
+                <button class="number-btn" onclick="rollDice(3)">3</button>
+                <button class="number-btn" onclick="rollDice(4)">4</button>
+                <button class="number-btn" onclick="rollDice(5)">5</button>
+                <button class="number-btn" onclick="rollDice(6)">6</button>
+            </div>
+            <button class="btn close-btn" onclick="closeDiceModal()">ЗАКРЫТЬ</button>
+        </div>
     </div>
-  </div>
 
-  <div class="modal" id="diceModal">
-    <div class="modal-content">
-      <h3>🎲 Бросок костей</h3>
-      <p>Ставка: <b id="betAmount">100</b> 🪙</p>
-      <input type="range" min="10" max="100000" value="100" id="betSlider" oninput="document.getElementById('betAmount').textContent = this.value">
-      <p>Выбери число:</p>
-      <div class="number-grid">
-        <button class="number-btn" onclick="rollDice(1)">1️⃣</button>
-        <button class="number-btn" onclick="rollDice(2)">2️⃣</button>
-        <button class="number-btn" onclick="rollDice(3)">3️⃣</button>
-        <button class="number-btn" onclick="rollDice(4)">4️⃣</button>
-        <button class="number-btn" onclick="rollDice(5)">5️⃣</button>
-        <button class="number-btn" onclick="rollDice(6)">6️⃣</button>
-      </div>
-      <button class="btn close-btn" onclick="closeDiceModal()">Закрыть</button>
-    </div>
-  </div>
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        tg.ready();
 
-  <script>
-    const tg = window.Telegram.WebApp;
-    tg.expand();
-    tg.ready();
+        function sendCommand(cmd) {
+            tg.sendData(JSON.stringify({ command: cmd }));
+            tg.HapticFeedback.impactOccurred('medium');
+        }
 
-    function sendCommand(cmd) {
-      tg.sendData(JSON.stringify({ command: cmd }));
-    }
+        function openDiceModal() {
+            document.getElementById('diceModal').classList.add('active');
+        }
 
-    function openDiceModal() { document.getElementById('diceModal').classList.add('active'); }
-    function closeDiceModal() { document.getElementById('diceModal').classList.remove('active'); }
+        function closeDiceModal() {
+            document.getElementById('diceModal').classList.remove('active');
+        }
 
-    function rollDice(number) {
-      const bet = document.getElementById('betSlider').value;
-      tg.sendData(JSON.stringify({ command: 'dice', bet: bet, number: number }));
-      closeDiceModal();
-      createConfetti();
-    }
+        function rollDice(number) {
+            const bet = document.getElementById('betSlider').value;
+            tg.sendData(JSON.stringify({ command: 'dice', bet: bet, number: number }));
+            closeDiceModal();
+            createConfetti();
+            tg.HapticFeedback.notificationOccurred('success');
+        }
 
-    function createConfetti() {
-      const colors = ['#ffd700','#ff6b6b','#4ecdc4','#45b7d1','#f7dc6f','#bb8fce'];
-      for (let i=0; i<20; i++) {
-        setTimeout(() => {
-          const p = document.createElement('div');
-          p.className = 'particle';
-          p.style.left = Math.random()*100 + '%';
-          p.style.background = colors[Math.floor(Math.random()*colors.length)];
-          p.style.width = p.style.height = (Math.random()*8+4) + 'px';
-          p.style.animationDuration = (Math.random()*1.5+1) + 's';
-          document.body.appendChild(p);
-          setTimeout(() => p.remove(), 2000);
-        }, i*25);
-      }
-    }
-  </script>
+        function createConfetti() {
+            const colors = ['#ffd700', '#ff6b6b', '#4ecdc4', '#f093fb', '#f5576c', '#45b7d1'];
+            for (let i = 0; i < 35; i++) {
+                setTimeout(() => {
+                    const p = document.createElement('div');
+                    p.className = 'particle';
+                    p.style.left = Math.random() * 100 + '%';
+                    p.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    p.style.width = (Math.random() * 10 + 5) + 'px';
+                    p.style.height = (Math.random() * 10 + 5) + 'px';
+                    p.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
+                    document.body.appendChild(p);
+                    setTimeout(() => p.remove(), 2500);
+                }, i * 20);
+            }
+        }
+    </script>
 </body>
 </html>
