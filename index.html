@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Token Fortune</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #030712;
+            --card: rgba(255,255,255,0.03);
+            --border: rgba(255,255,255,0.06);
+            --accent: #8b5cf6;
+            --accent2: #a78bfa;
+            --gold: #fbbf24;
+            --pink: #ec4899;
+            --green: #10b981;
+            --red: #ef4444;
+        }
+
+        body {
+            background: var(--bg);
+            color: #fff;
+            font-family: 'Inter', -apple-system, sans-serif;
+            min-height: 100vh;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            background-image: 
+                radial-gradient(ellipse at 30% 20%, rgba(139,92,246,0.06) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 80%, rgba(236,72,153,0.05) 0%, transparent 60%);
+        }
+
+        /* ЭКРАНЫ */
+        .screen {
+            display: none;
+            padding: 20px 16px 100px;
+            animation: fadeIn 0.3s ease;
+        }
+        .screen.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ШАПКА */
+        .header {
+            text-align: center;
+            padding: 20px 0 10px;
+        }
+        .logo-emoji {
+            font-size: 56px;
+            display: block;
+            animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 10px 20px rgba(139,92,246,0.4));
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        .logo-text {
+            font-size: 28px;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--accent2), var(--pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+        }
+        .online-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 6px;
+            font-size: 11px;
+            opacity: 0.6;
+            letter-spacing: 1px;
+        }
+        .live-dot {
+            width: 6px; height: 6px;
+            background: var(--green);
+            border-radius: 50%;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* ЗАГОЛОВКИ ЭКРАНОВ */
+        .screen-title {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        /* КАРТОЧКИ */
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 12px;
+            backdrop-filter: blur(20px);
+            transition: all 0.3s;
+        }
+        .card:active { transform: scale(0.98); }
+
+        .card-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-label {
+            font-size: 12px;
+            opacity: 0.5;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .card-value {
+            font-size: 20px;
+            font-weight: 800;
+            margin-top: 4px;
+        }
+        .card-value.gold { color: var(--gold); }
+        .card-value.purple { color: var(--accent2); }
+
+        /* КНОПКИ */
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .btn:active { transform: scale(0.95); }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--pink));
+            color: #fff;
+            box-shadow: 0 10px 30px rgba(139,92,246,0.3);
+        }
+        .btn-secondary {
+            background: rgba(255,255,255,0.06);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .btn-danger {
+            background: rgba(239,68,68,0.2);
+            color: #ef4444;
+            border: 1px solid rgba(239,68,68,0.3);
+        }
+
+        /* СТАТУС */
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        .badge-green { background: rgba(16,185,129,0.2); color: var(--green); }
+        .badge-red { background: rgba(239,68,68,0.2); color: var(--red); }
+        .badge-purple { background: rgba(139,92,246,0.2); color: var(--accent2); }
+        .badge-pink { background: rgba(236,72,153,0.2); color: var(--pink); }
+
+        /* МОДАЛКА КОСТЕЙ */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(20px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+        .modal.open { opacity: 1; visibility: visible; }
+        .modal-box {
+            background: #0c0c1d;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 28px;
+            padding: 28px 22px;
+            width: 88%;
+            max-width: 340px;
+            text-align: center;
+            transform: scale(0.9);
+            transition: transform 0.3s;
+        }
+        .modal.open .modal-box { transform: scale(1); }
+
+        .dice-result {
+            font-size: 80px;
+            margin: 15px 0;
+            animation: dicePop 0.5s ease-out;
+        }
+        @keyframes dicePop {
+            0% { transform: scale(0) rotate(-180deg); }
+            60% { transform: scale(1.2) rotate(10deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
+        .result-text {
+            font-size: 22px;
+            font-weight: 900;
+            margin: 10px 0;
+        }
+        .result-text.win { color: var(--green); }
+        .result-text.lose { color: var(--red); }
+
+        /* НИЖНЕЕ МЕНЮ */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            background: rgba(3,7,18,0.98);
+            backdrop-filter: blur(30px);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 8px 20px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            z-index: 50;
+        }
+        .nav-item {
+            text-align: center;
+            opacity: 0.4;
+            transition: all 0.3s;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: #fff;
+        }
+        .nav-item.active { opacity: 1; color: var(--accent2); }
+        .nav-emoji { font-size: 22px; display: block; margin-bottom: 2px; }
+        .nav-item:active { transform: scale(0.9); }
+
+        /* ПОЛЗУНОК */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255,255,255,0.1);
+            outline: none;
+            margin: 12px 0;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 26px; height: 26px;
+            border-radius: 50%;
+            background: #fff;
+            border: 3px solid var(--accent);
+            box-shadow: 0 0 20px rgba(139,92,246,0.5);
+        }
+
+        .num-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .num-btn {
+            background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(255,255,255,0.1);
+            color: #fff;
+            padding: 14px;
+            border-radius: 14px;
+            font-size: 22px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .num-btn:active {
+            background: var(--accent);
+            border-color: var(--accent2);
+            transform: scale(0.85);
+        }
+
+        /* КОНФЕТТИ */
+        .confetti-piece {
+            position: fixed;
+            pointer-events: none;
+            z-index: 250;
+            animation: confettiFall var(--dur) ease-out forwards;
+        }
+        @keyframes confettiFall {
+            0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(0); opacity: 0; }
+        }
+
+        /* ТАЙМЕР */
+        .timer {
+            font-size: 14px;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ЭКРАН 1: ГЛАВНАЯ -->
+    <div class="screen active" id="screen-home">
+        <div class="header">
+            <span class="logo-emoji">🎲</span>
+            <h1 class="logo-text">TOKEN FORTUNE</h1>
+            <div class="online-badge"><span class="live-dot"></span> ОНЛАЙН</div>
+        </div>
+
+        <div class="card" style="text-align:center;">
+            <div class="card-label">ВСЕГО ТОКЕНОВ</div>
+            <div class="card-value gold" id="home-balance">—</div>
+        </div>
+
+        <button class="btn btn-primary" onclick="openDice()">🎲 БРОСИТЬ КОСТИ</button>
+        <button class="btn btn-secondary" onclick="showScreen('contests')">🏆 КОНКУРСЫ <span id="contests-count" style="font-size:12px;opacity:0.6;"></span></button>
+        <button class="btn btn-secondary" onclick="getBonus()">🎁 ЗАБРАТЬ БОНУС</button>
+    </div>
+
+    <!-- ЭКРАН 2: КОНКУРСЫ -->
+    <div class="screen" id="screen-contests">
+        <h2 class="screen-title">🏆 АКТИВНЫЕ КОНКУРСЫ</h2>
+        <div id="contests-list">
+            <div class="card" style="text-align:center;opacity:0.5;">Загрузка...</div>
+        </div>
+        <button class="btn btn-secondary" onclick="showScreen('home')">🔙 НА ГЛАВНУЮ</button>
+    </div>
+
+    <!-- ЭКРАН 3: СТАТИСТИКА -->
+    <div class="screen" id="screen-stats">
+        <h2 class="screen-title">📊 СТАТИСТИКА</h2>
+        <div class="card">
+            <div class="card-label">ТОКЕНОВ</div>
+            <div class="card-value gold" id="stats-tokens">—</div>
+        </div>
+        <div class="card">
+            <div class="card-label">ПОБЕД В КОНКУРСАХ</div>
+            <div class="card-value purple" id="stats-wins">—</div>
+        </div>
+        <div class="card">
+            <div class="card-label">ПОБЕД В КОСТЯХ</div>
+            <div class="card-value" id="stats-dice">—</div>
+        </div>
+        <div class="card">
+            <div class="card-label">СЕРИЯ ПОБЕД</div>
+            <div class="card-value" id="stats-streak">—</div>
+        </div>
+        <button class="btn btn-secondary" onclick="showScreen('home')">🔙 НА ГЛАВНУЮ</button>
+    </div>
+
+    <!-- МОДАЛКА КОСТЕЙ -->
+    <div class="modal" id="diceModal">
+        <div class="modal-box" id="diceModalBox">
+            <!-- Экран выбора -->
+            <div id="dice-select">
+                <h2 style="margin-bottom:15px;">🎲 БРОСОК КОСТЕЙ</h2>
+                <div class="card-label">СТАВКА</div>
+                <div style="font-size:24px;font-weight:900;color:var(--gold);" id="betVal">100</div>
+                <input type="range" min="10" max="100000" value="100" id="betSlider" oninput="document.getElementById('betVal').textContent=Number(this.value).toLocaleString()">
+                <p style="margin-top:12px;font-weight:700;">ВЫБЕРИ ЧИСЛО</p>
+                <div class="num-grid">
+                    <button class="num-btn" onclick="rollDice(1)">1</button>
+                    <button class="num-btn" onclick="rollDice(2)">2</button>
+                    <button class="num-btn" onclick="rollDice(3)">3</button>
+                    <button class="num-btn" onclick="rollDice(4)">4</button>
+                    <button class="num-btn" onclick="rollDice(5)">5</button>
+                    <button class="num-btn" onclick="rollDice(6)">6</button>
+                </div>
+                <button class="btn btn-secondary" onclick="closeDice()">ЗАКРЫТЬ</button>
+            </div>
+            <!-- Экран результата -->
+            <div id="dice-result" style="display:none;">
+                <div class="dice-result" id="dice-emoji">🎲</div>
+                <div class="result-text" id="dice-result-text"></div>
+                <div id="dice-result-detail" style="opacity:0.7;margin:8px 0;"></div>
+                <button class="btn btn-primary" onclick="showDiceSelect()">🎲 ЕЩЁ РАЗ</button>
+                <button class="btn btn-secondary" onclick="closeDice()">ЗАКРЫТЬ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- НИЖНЕЕ МЕНЮ -->
+    <div class="bottom-nav">
+        <button class="nav-item active" onclick="showScreen('home')"><span class="nav-emoji">🏠</span>ГЛАВНАЯ</button>
+        <button class="nav-item" onclick="showScreen('contests')"><span class="nav-emoji">🏆</span>КОНКУРСЫ</button>
+        <button class="nav-item" onclick="showScreen('stats')"><span class="nav-emoji">📊</span>СТАТИСТИКА</button>
+    </div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        tg.ready();
+        
+        const BOT_USERNAME = 'TOKENFORTUNEbot';
+        const API_URL = `https://api.telegram.org/bot8639533351:AAHECURqkYrLf23De6qYIZqZdlrk2sh27z0`;
+        
+        let userData = { tokens: 0, total_wins: 0, dice_wins: 0, win_streak: 0 };
+        let activeContests = [];
+        let selectedNumber = null;
+        let selectedBet = 0;
+
+        // ===== НАВИГАЦИЯ =====
+        function showScreen(name) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('screen-' + name).classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            
+            const navMap = { home: 0, contests: 1, stats: 2 };
+            document.querySelectorAll('.nav-item')[navMap[name]].classList.add('active');
+            
+            if (name === 'contests') loadContests();
+            if (name === 'stats') loadStats();
+            loadBalance();
+            tg.HapticFeedback.impactOccurred('light');
+        }
+
+        // ===== ЗАГРУЗКА ДАННЫХ =====
+        async function loadBalance() {
+            try {
+                const user = tg.initDataUnsafe?.user;
+                if (!user) return;
+                const res = await fetch(`${API_URL}/getChat?chat_id=${user.id}`);
+                document.getElementById('home-balance').textContent = userData.tokens.toLocaleString() + ' 🪙';
+            } catch(e) {}
+        }
+
+        function loadContests() {
+            const list = document.getElementById('contests-list');
+            if (activeContests.length === 0) {
+                list.innerHTML = '<div class="card" style="text-align:center;opacity:0.6;">Нет активных конкурсов</div>';
+                return;
+            }
+            list.innerHTML = activeContests.map((c, i) => `
+                <div class="card">
+                    <div class="card-row">
+                        <div>
+                            <div style="font-weight:700;">${c.name || 'Конкурс #' + c.id}</div>
+                            <div class="timer">⏰ ${getTimeLeft(c.end_time)}</div>
+                        </div>
+                        <div>
+                            <span class="badge badge-purple">${c.participants ? c.participants.length : 0} участ.</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" style="margin-top:10px;" onclick="joinContest(${c.id})">🎯 УЧАСТВОВАТЬ</button>
+                </div>
+            `).join('');
+        }
+
+        function loadStats() {
+            document.getElementById('stats-tokens').textContent = userData.tokens.toLocaleString() + ' 🪙';
+            document.getElementById('stats-wins').textContent = userData.total_wins || 0;
+            document.getElementById('stats-dice').textContent = userData.dice_wins || 0;
+            document.getElementById('stats-streak').textContent = userData.win_streak || 0;
+        }
+
+        function getTimeLeft(endTime) {
+            if (!endTime) return '—';
+            const diff = new Date(endTime) - new Date();
+            if (diff <= 0) return 'Завершён';
+            const h = Math.floor(diff / 3600000);
+            const m = Math.floor((diff % 3600000) / 60000);
+            return `${h}ч ${m}м`;
+        }
+
+        // ===== ДЕЙСТВИЯ =====
+        function openDice() {
+            document.getElementById('diceModal').classList.add('open');
+            document.getElementById('dice-select').style.display = 'block';
+            document.getElementById('dice-result').style.display = 'none';
+            tg.HapticFeedback.impactOccurred('light');
+        }
+
+        function closeDice() {
+            document.getElementById('diceModal').classList.remove('open');
+        }
+
+        function showDiceSelect() {
+            document.getElementById('dice-select').style.display = 'block';
+            document.getElementById('dice-result').style.display = 'none';
+        }
+
+        function rollDice(number) {
+            const bet = parseInt(document.getElementById('betSlider').value);
+            selectedNumber = number;
+            selectedBet = bet;
+            
+            // Анимация
+            document.getElementById('dice-select').style.display = 'none';
+            document.getElementById('dice-result').style.display = 'block';
+            
+            const resultEmoji = document.getElementById('dice-emoji');
+            const faces = ['⚀','⚁','⚂','⚃','⚄','⚅'];
+            let count = 0;
+            
+            const interval = setInterval(() => {
+                resultEmoji.textContent = faces[Math.floor(Math.random() * 6)];
+                count++;
+                if (count >= 10) {
+                    clearInterval(interval);
+                    
+                    // Результат
+                    const diceResult = Math.floor(Math.random() * 6) + 1;
+                    const win = diceResult === number;
+                    
+                    resultEmoji.textContent = faces[diceResult - 1];
+                    
+                    const resultText = document.getElementById('dice-result-text');
+                    const resultDetail = document.getElementById('dice-result-detail');
+                    
+                    if (win) {
+                        resultText.textContent = '🎉 ПОБЕДА!';
+                        resultText.className = 'result-text win';
+                        resultDetail.textContent = `+${bet * 2} 🪙`;
+                        userData.tokens += bet * 2;
+                        userData.dice_wins = (userData.dice_wins || 0) + 1;
+                        spawnConfetti();
+                        tg.HapticFeedback.notificationOccurred('success');
+                    } else {
+                        resultText.textContent = '😢 ПРОИГРЫШ';
+                        resultText.className = 'result-text lose';
+                        resultDetail.textContent = `-${bet} 🪙`;
+                        userData.tokens -= bet;
+                        tg.HapticFeedback.notificationOccurred('error');
+                    }
+                    
+                    // Отправляем боту
+                    tg.openTelegramLink(`https://t.me/${BOT_USERNAME}?start=dice_${bet}_${number}`);
+                    
+                    loadBalance();
+                }
+            }, 60);
+        }
+
+        function joinContest(contestId) {
+            tg.openTelegramLink(`https://t.me/${BOT_USERNAME}?start=join_contest`);
+            tg.HapticFeedback.notificationOccurred('success');
+        }
+
+        function getBonus() {
+            tg.openTelegramLink(`https://t.me/${BOT_USERNAME}?start=bonus`);
+            tg.HapticFeedback.impactOccurred('heavy');
+        }
+
+        // ===== КОНФЕТТИ =====
+        function spawnConfetti() {
+            const emojis = ['✨','💎','🪙','⭐','💰','🎉','💜'];
+            for (let i = 0; i < 40; i++) {
+                setTimeout(() => {
+                    const el = document.createElement('div');
+                    el.className = 'confetti-piece';
+                    el.style.left = '50%';
+                    el.style.top = '40%';
+                    el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                    el.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                    el.style.setProperty('--tx', (Math.random() * 300 - 150) + 'px');
+                    el.style.setProperty('--ty', (Math.random() * -300 - 50) + 'px');
+                    el.style.setProperty('--rot', (Math.random() * 500 - 250) + 'deg');
+                    el.style.setProperty('--dur', (Math.random() * 1.2 + 0.6) + 's');
+                    document.body.appendChild(el);
+                    setTimeout(() => el.remove(), 2000);
+                }, i * 15);
+            }
+        }
+
+        // ===== ЗАГРУЗКА ПРИ СТАРТЕ =====
+        loadBalance();
+        
+        // Пробуем получить данные пользователя через Telegram API
+        const user = tg.initDataUnsafe?.user;
+        if (user) {
+            fetch(`${API_URL}/getChat?chat_id=${user.id}`)
+                .then(r => r.json())
+                .then(d => {
+                    if (d.ok) {
+                        // Пользователь есть в боте
+                    }
+                }).catch(() => {});
+        }
+    </script>
+</body>
+</html>
