@@ -963,27 +963,30 @@
         }
 
         function rollDice(number) {
-            const bet = document.getElementById('betSlider').value;
-            const display = document.getElementById('diceDisplay');
-            
-            display.classList.add('rolling-fast');
-            
-            const faces = ['🎲', '⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
-            let count = 0;
-            
-            const interval = setInterval(() => {
-                display.textContent = faces[Math.floor(Math.random() * 6) + 1];
-                count++;
-                
-                if (count >= 10) {
-                    clearInterval(interval);
-                    display.textContent = faces[number];
-                    display.classList.remove('rolling-fast');
-                    
-                    setTimeout(() => {
+    const bet = document.getElementById('betSlider').value;
+    const display = document.getElementById('diceDisplay');
     
-    tg.openTelegramLink(`https://t.me/TOKENFORTUNEbot?start=dice_${bet}_${num}`);
-}, 350);
+    display.classList.add('rolling-fast');
+    
+    const faces = ['🎲', '⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
+    let count = 0;
+    
+    const interval = setInterval(() => {
+        display.textContent = faces[Math.floor(Math.random() * 6) + 1];
+        count++;
+        
+        if (count >= 10) {
+            clearInterval(interval);
+            display.textContent = faces[number];
+            display.classList.remove('rolling-fast');
+            
+            setTimeout(() => {
+                closeDice();
+                tg.openTelegramLink(`https://t.me/TOKENFORTUNEbot?start=dice_${bet}_${number}`);
+            }, 350);
+        }
+    }, 60);
+}
                         
                         // Визуал победы
                         const overlay = document.getElementById('winOverlay');
