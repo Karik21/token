@@ -982,12 +982,9 @@
                     display.classList.remove('rolling-fast');
                     
                     setTimeout(() => {
-                        tg.openTelegramLink(`https://t.me/TOKENFORTUNEbot?start=dice_${bet}_${num}`);
-tg.close();
-                        closeDice();
-                        megaConfetti(80);
-                        tg.HapticFeedback.notificationOccurred('success');
-                        showToast('🎲 БРОСОК СДЕЛАН!');
+    closeDice();
+    tg.openTelegramLink(`https://t.me/TOKENFORTUNEbot?start=dice_${bet}_${num}`);
+}, 350);
                         
                         // Визуал победы
                         const overlay = document.getElementById('winOverlay');
