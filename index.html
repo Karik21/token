@@ -410,7 +410,7 @@
         tg.ready();
         
         const BOT_USERNAME = 'TOKENFORTUNEbot';
-        const API_URL = `https://api.telegram.org/bot8639533351:AAHECURqkYrLf23De6qYIZqZdlrk2sh27z0`;
+        const API_URL = '';
         
         let userData = { tokens: 0, total_wins: 0, dice_wins: 0, win_streak: 0 };
         let activeContests = [];
@@ -435,12 +435,7 @@
         // ===== ЗАГРУЗКА ДАННЫХ =====
         async function loadBalance() {
             try {
-                const user = tg.initDataUnsafe?.user;
-                if (!user) return;
-                const res = await fetch(`${API_URL}/getChat?chat_id=${user.id}`);
-                document.getElementById('home-balance').textContent = userData.tokens.toLocaleString() + ' 🪙';
-            } catch(e) {}
-        }
+               
 
         function loadContests() {
             const list = document.getElementById('contests-list');
