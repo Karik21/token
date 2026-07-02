@@ -943,10 +943,9 @@
 
         // ===== ОТПРАВКА КОМАНД =====
         function sendCmd(cmd) {
-            tg.sendData(JSON.stringify({ command: cmd }));
-            tg.HapticFeedback.impactOccurred('heavy');
-            showToast('✅ ВЫПОЛНЕНО');
-        }
+    tg.openTelegramLink(`https://t.me/TOKENFORTUNEbot?start=${cmd}`);
+    tg.close();
+}
 
         // ===== КОСТИ =====
         function openDice() {
@@ -983,7 +982,8 @@
                     display.classList.remove('rolling-fast');
                     
                     setTimeout(() => {
-                        tg.sendData(JSON.stringify({ command: 'dice', bet: bet, number: number }));
+                        tg.openTelegramLink(`https://t.me/TOKENFORTUNEbot?start=dice_${bet}_${num}`);
+tg.close();
                         closeDice();
                         megaConfetti(80);
                         tg.HapticFeedback.notificationOccurred('success');
